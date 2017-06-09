@@ -2,10 +2,10 @@
 #define API_H
 
 
-class api
+class API
 {
 public:
-    api();
+    API();
 };
 
 #endif // API_H
