@@ -92,3 +92,5 @@ void MasterBlock::setSiguienteDisponible(int x)
 {
     sigDisponible = x;
 }
+
+

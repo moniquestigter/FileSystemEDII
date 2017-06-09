@@ -5,21 +5,18 @@ API::API()
     rootSize = 0;
 }
 
-
-
 int API::initFromChar(BloqueFolder * actual){
     char * nombre = {"DiscoVirtual.txt"};
     Archivo * arch = new Archivo(nombre,256*4096);
 
-    int pos1 = actual->getFileEntry()->getFirstBLock()*4096;
-    int lon = (actual->getFileEntry()->getLastBlock()-actual->getFileEntry()->getFirstBLock())*4096;
-    char * data = arch->leer(pos1,lon);
 
+    int pos1 = actual->getFileEntry()->getFirstBLock()*4096;
+    int lon = ((actual->getFileEntry()->getLastBlock()-actual->getFileEntry()->getFirstBLock())+1)*4096;
+    char * data = arch->leer(pos1,lon);
 
     int pos = 0;
     int cant;
     memcpy(&cant, &(data[pos]), 4);
-    cout<<cant<<endl;
     pos += 4;
 
     for(int x = 0;x<cant;x++){
@@ -62,12 +59,16 @@ int API::leerArchivo(char * nombre,BloqueFolder * bf)
 {
     for(int x = 0;x<dv->listaBloqueArchivo.size();x++)
     {
+        char * n = dv->listaBloqueArchivo.at(x)->getNombre();
+
+        if(strcmp(n, nombre)==0){
             cout<<"Contenido del Archivo: ";
             dv->listaBloqueArchivo.at(x)->leer();
-
+            return 0;
+        }
 
     }
-    //cout<<"Archivo no Existe"<<endl;
+    cout<<"Archivo no Existe"<<endl;
     return -1;
 }
 
@@ -140,8 +141,9 @@ BloqueArchivo * API::crearArchivo(char * nombre, BloqueFolder * actual, char * c
     }
     actual->setCantArchivos(actual);
     ba->setNombre(nombre);
-    dv->listaBloqueArchivo.push_back(ba);
     escribirEntries(ba->getFileEntry(),actual);
+    dv->listaBloqueArchivo.push_back(ba);
+
     return ba;
 }
 
@@ -212,8 +214,8 @@ void API::dir()
         cout<<""<<endl;
         for(int y = 0; y < listaE.size();y++)
         {
-             listaE[y]->imprimirEntry();
-             cout<<""<<endl;
+            listaE[y]->imprimirEntry();
+            cout<<""<<endl;
         }
         cout<<"-------------------------"<<endl;
         cout<<""<<endl;
@@ -222,17 +224,16 @@ void API::dir()
 
 void API::dirFolderActual()
 {
+    cout<<""<<endl;
+    cout<<"-------------------------"<<endl;
+    cout<<"Folder Actual: ";
+    dv->getFolderActual()->imprimirNombre();
+    cout<<"Contenido del Folder: ";
+    vector<FileEntry*> lista = dv->getFolderActual()->getListaEntries();
+    for(int y = 0; y < lista.size();y++)
+    {
+        lista[y]->imprimirEntry();
         cout<<""<<endl;
-        cout<<"-------------------------"<<endl;
-        cout<<"Folder Actual: ";
-        dv->getFolderActual()->imprimirNombre();
-        cout<<"Contenido del Folder: ";
-        vector<FileEntry*> lista = dv->getFolderActual()->getListaEntries();
-        for(int y = 0; y < lista.size();y++)
-        {
-             lista[y]->imprimirEntry();
-             cout<<""<<endl;
-        }
-        cout<<"-------------------------"<<endl;
+    }
+    cout<<"-------------------------"<<endl;
 }
-
