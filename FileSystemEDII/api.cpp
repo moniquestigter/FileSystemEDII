@@ -125,8 +125,8 @@ BloqueArchivo * API::crearArchivo(char * nombre, BloqueFolder * actual, char * c
     {
         dv->getMasterBlock()->setSiguienteDisponible(pos+1);
         archivo->escribir(contenido,pos*4096,strlen(contenido));
-        ba->setFileEntry(nombre,pos,pos,false,strlen(contenido));
-        actual->agregarFileEntry(ba->getFileEntry());
+        //ba->setFileEntry(nombre,pos,pos,false,strlen(contenido));
+        //actual->agregarFileEntry(ba->getFileEntry());
 
     }
 
@@ -136,12 +136,12 @@ BloqueArchivo * API::crearArchivo(char * nombre, BloqueFolder * actual, char * c
             size++;
         dv->getMasterBlock()->setSiguienteDisponible(pos+size);
         archivo->escribir(contenido,pos*4096,strlen(contenido));
-        ba->setFileEntry(nombre,pos,pos+size,false,strlen(contenido));
-        actual->agregarFileEntry(ba->getFileEntry());
+        //ba->setFileEntry(nombre,pos,pos+size,false,strlen(contenido));
+        //actual->agregarFileEntry(ba->getFileEntry());
     }
-    actual->setCantArchivos(actual);
+    //actual->setCantArchivos(actual);
     ba->setNombre(nombre);
-    escribirEntries(ba->getFileEntry(),actual);
+    //escribirEntries(ba->getFileEntry(),actual);
     dv->listaBloqueArchivo.push_back(ba);
 
     return ba;
@@ -156,11 +156,11 @@ BloqueFolder * API::crearFolder(char * nombre,BloqueFolder * actual)
     dv->getMasterBlock()->setSiguienteDisponible(pos+1);
 
     bf->setFileEntry(nombre,pos,pos,true,0);
-    actual->agregarFileEntry(bf->getFileEntry());
-    escribirEntries(bf->getFileEntry(),actual);
+    //actual->agregarFileEntry(bf->getFileEntry());
+    //escribirEntries(bf->getFileEntry(),actual);
     dv->listaBloqueFolder.push_back(bf);
     bf->setNombre(nombre);
-    actual->setCantArchivos(actual);
+    //actual->setCantArchivos(actual);
     bf->setCant(bf);
     return bf;
 }
