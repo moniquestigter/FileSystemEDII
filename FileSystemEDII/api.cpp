@@ -118,7 +118,7 @@ BloqueArchivo * API::crearArchivo(char * nombre, BloqueFolder * actual, char * c
     archivo->abrir();
     int pos = dv->getMasterBlock()->getSigDisponible();
     BloqueArchivo * ba = new BloqueArchivo(nombre,pos,strlen(contenido),dv->getArchivo());
-    actual->getFileEntry()->setSize(strlen(contenido));
+    //actual->getFileEntry()->setSize(strlen(contenido));
     int size = strlen(contenido)/4096;
 
     if(size<1)
