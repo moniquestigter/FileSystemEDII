@@ -43,3 +43,15 @@ HEADERS  += mainwindow.h \
     masterblock.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    imagenes.qrc
+
+DISTFILES += \
+    save-128.png \
+    remove-icon-png-24.png \
+    pencil_and_paper-512.png \
+    jixzMaA5T.png \
+    Cancel_Icon-128.png \
+    901 (1).png \
+    901 (1) - copia.png

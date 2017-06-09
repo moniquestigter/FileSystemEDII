@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>881</width>
-    <height>581</height>
+    <width>729</width>
+    <height>535</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QWidget" name="centralWidget_2" native="true">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>50</y>
+      <x>10</x>
+      <y>10</y>
       <width>711</width>
       <height>461</height>
      </rect>
@@ -80,6 +80,10 @@
      <property name="text">
       <string/>
      </property>
+     <property name="icon">
+      <iconset resource="imagenes.qrc">
+       <normaloff>:/901 (1) - copia.png</normaloff>:/901 (1) - copia.png</iconset>
+     </property>
     </widget>
     <widget class="QPushButton" name="btnAdelante">
      <property name="geometry">
@@ -92,6 +96,10 @@
      </property>
      <property name="text">
       <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="imagenes.qrc">
+       <normaloff>:/901 (1).png</normaloff>:/901 (1).png</iconset>
      </property>
     </widget>
     <widget class="QPushButton" name="btnNuevo">
@@ -107,7 +115,7 @@
       <string>Nuevo</string>
      </property>
      <property name="icon">
-      <iconset>
+      <iconset resource="imagenes.qrc">
        <normaloff>:/jixzMaA5T.png</normaloff>:/jixzMaA5T.png</iconset>
      </property>
     </widget>
@@ -133,8 +141,8 @@
       <rect>
        <x>10</x>
        <y>50</y>
-       <width>151</width>
-       <height>421</height>
+       <width>121</width>
+       <height>401</height>
       </rect>
      </property>
      <column>
@@ -143,22 +151,6 @@
       </property>
      </column>
     </widget>
-   </widget>
-   <widget class="QMenuBar" name="menuBar_2">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>30</y>
-      <width>710</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <widget class="QMenu" name="menuNuevo">
-     <property name="title">
-      <string>Nuevo</string>
-     </property>
-    </widget>
-    <addaction name="menuNuevo"/>
    </widget>
    <widget class="QToolBar" name="mainToolBar_2">
     <property name="geometry">
@@ -186,8 +178,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>881</width>
-     <height>17</height>
+     <width>729</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>
@@ -220,6 +212,8 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="imagenes.qrc"/>
+ </resources>
  <connections/>
 </ui>

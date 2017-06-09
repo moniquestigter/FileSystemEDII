@@ -9,9 +9,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     api = new API();
-
-    ui->btnAtras->setStyleSheet("border-image: url(:/Imagenes/901 (1) - copia.png);");
-    ui->btnAdelante->setStyleSheet("border-image: url(:/Imagenes/901 (1).png);");
     raiz = api->root;
     folderActual = raiz;
     api->crearDiscoVirtual();
@@ -51,7 +48,7 @@ void MainWindow::insertarCarpeta(char * nombre)
     listaBotones.append(folder);
     listaBotones.at(cantBotones)->setObjectName(QString::fromStdString(nombre));
     listaBotones.at(cantBotones)->setGeometry(QRect(QPoint(posX, posY),QSize(50, 50)));
-    listaBotones.at(cantBotones)->setStyleSheet("border-image: url(:/Imagenes/Folders-PNG-File.png);");
+    listaBotones.at(cantBotones)->setStyleSheet("border-image: url(:/Folders-PNG-File.png);");
     listaBotones.at(cantBotones)->show();
 
     connect(listaBotones.at(cantBotones), SIGNAL (released()),this, SLOT (eventoCarpetas()));
@@ -71,7 +68,7 @@ void MainWindow::insertarArchivo(char * nombre)
     listaBotones.append(file);
     listaBotones.at(cantBotones)->setObjectName(QString::fromStdString(nombre));
     listaBotones.at(cantBotones)->setGeometry(QRect(QPoint(posX, posY),QSize(60, 60)));
-    listaBotones.at(cantBotones)->setStyleSheet("border-image: url(:/Imagenes/Docs-icon-iloveimg-resized.png);");
+    listaBotones.at(cantBotones)->setStyleSheet("border-image: url(:/Docs-icon-iloveimg-resized.png);");
     listaBotones.at(cantBotones)->show();
     connect(listaBotones.at(cantBotones), SIGNAL (released()),this, SLOT (eventoArchivos()));
     cantBotones++;
@@ -115,17 +112,17 @@ void MainWindow::on_btnNuevo_clicked()
     msgBoxNuevo.setWindowTitle("File System Utils");
     msgBoxNuevo.setText(tr("Crear Nuevo"));
     QAbstractButton * pButtonCarpeta = msgBoxNuevo.addButton(tr("Carpeta"), QMessageBox::YesRole);
-    QPixmap pixmap(":/Imagenes/Folders-PNG-File.png");
+    QPixmap pixmap(":/Folders-PNG-File.png");
     QIcon buttonicon(pixmap);
     pButtonCarpeta->setIcon(buttonicon);
 
     QAbstractButton * pButtonArchivo = msgBoxNuevo.addButton(tr("Archivo"), QMessageBox::YesRole);
-    QPixmap pixmap1(":/Imagenes/Docs-icon-iloveimg-resized.png");
+    QPixmap pixmap1(":/Docs-icon-iloveimg-resized.png");
     QIcon buttonicon1(pixmap1);
     pButtonArchivo->setIcon(buttonicon1);
 
     QAbstractButton * pButtonCancelar = msgBoxNuevo.addButton(tr("Cancelar"), QMessageBox::NoRole);
-    QPixmap pixmap2(":/Imagenes/Cancel_Icon-128.png");
+    QPixmap pixmap2(":/Cancel_Icon-128.png");
     QIcon buttonicon2(pixmap2);
     pButtonCancelar->setIcon(buttonicon2);
 
@@ -140,7 +137,10 @@ void MainWindow::on_btnNuevo_clicked()
 void MainWindow::nuevaCarpeta()
 {
     QString x = QInputDialog::getText(this,"Nueva Carpeta","Ingrese el Nombre de la Carpeta:");
+    string x_1 = x.toStdString();
     char * nombre = (char *)malloc(x.length());
+    strcpy( nombre, x_1.c_str() );
+
     if(x != "")
     {
         BloqueFolder * bf = api->crearFolder(nombre,folderActual);
@@ -152,10 +152,14 @@ void MainWindow::nuevaCarpeta()
 void MainWindow::nuevoArchivo()
 {
     QString x = QInputDialog::getText(this,"Nuevo Archivo de Texto","Ingrese el Nombre del Archivo:");
+    string x_1 = x.toStdString();
     char * nombre = (char *)malloc(x.length());
+    strcpy( nombre, x_1.c_str() );
 
     QString x2 = QInputDialog::getText(this,"Contenido","Ingrese el contenido del archivo:");
+    string x2_1 = x2.toStdString();
     char * contenido = (char *)malloc(x2.length());
+    strcpy( contenido, x2_1.c_str() );
 
 
     if(x != "")
@@ -173,12 +177,12 @@ void MainWindow::eventoArchivos()
     msgBoxArchivos.setText(tr("Que desea hacer?"));
 
     QAbstractButton * pButtonAbrir = msgBoxArchivos.addButton(tr("Leer"), QMessageBox::YesRole);
-    QPixmap pixmap(":/Imagenes/oYPS__file_document_enlarge_magnifier_magnify_examine_read_paper_page_text-512.png");
+    QPixmap pixmap(":/oYPS__file_document_enlarge_magnifier_magnify_examine_read_paper_page_text-512.png");
     QIcon buttonicon(pixmap);
     pButtonAbrir->setIcon(buttonicon);
 
     QAbstractButton * pButtonCancelar = msgBoxArchivos.addButton(tr("Cancelar"), QMessageBox::NoRole);
-    QPixmap pixmap2(":/Imagenes/Cancel_Icon-128.png");
+    QPixmap pixmap2(":/Cancel_Icon-128.png");
     QIcon buttonicon2(pixmap2);
     pButtonCancelar->setIcon(buttonicon2);
 
@@ -200,12 +204,12 @@ void MainWindow::eventoCarpetas()
     msgBoxCarpetas.setText(tr("Que desea hacer?"));
 
     QAbstractButton * pButtonAbrir = msgBoxCarpetas.addButton(tr("Abrir"), QMessageBox::YesRole);
-    QPixmap pixmap(":/Imagenes/oYPS__file_document_enlarge_magnifier_magnify_examine_read_paper_page_text-512.png");
+    QPixmap pixmap(":/oYPS__file_document_enlarge_magnifier_magnify_examine_read_paper_page_text-512.png");
     QIcon buttonicon(pixmap);
     pButtonAbrir->setIcon(buttonicon);
 
     QAbstractButton * pButtonCancelar = msgBoxCarpetas.addButton(tr("Cancelar"), QMessageBox::NoRole);
-    QPixmap pixmap2(":/Imagenes/Cancel_Icon-128.png");
+    QPixmap pixmap2(":/Cancel_Icon-128.png");
     QIcon buttonicon2(pixmap2);
     pButtonCancelar->setIcon(buttonicon2);
 
