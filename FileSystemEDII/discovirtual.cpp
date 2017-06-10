@@ -73,9 +73,9 @@ MasterBlock * DiscoVirtual::getMasterBlock()
 }
 
 
-QList<FileEntry*> DiscoVirtual::listarArchivosEnRaiz()
+Lista * DiscoVirtual::listarArchivosEnRaiz()
 {
-    QList<FileEntry*> lista;
+    Lista * lista;
     if(mb->getSigDisponible() == 1)
         return lista;
 

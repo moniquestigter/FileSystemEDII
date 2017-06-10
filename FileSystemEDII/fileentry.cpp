@@ -6,6 +6,7 @@ FileEntry::FileEntry() {
     lastBlock = 0;
     isFolder = false;
     size = 0;
+    sig == nullptr;
 }
 void FileEntry::imprimirEntry()
 {

@@ -32,6 +32,7 @@ public:
     int lastBlock;
     bool isFolder;
     int size;
+    FileEntry * sig;
 
 };
 

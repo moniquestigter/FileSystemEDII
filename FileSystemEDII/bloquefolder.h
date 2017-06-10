@@ -6,7 +6,7 @@
 #include "MasterBlock.h"
 #include "FileEntry.h"
 
-#include <vector>
+#include "lista.h"
 
 class BloqueFolder
 {
@@ -19,11 +19,12 @@ public:
 
     Archivo * archivo;
     FileEntry *fe;
-    vector<FileEntry *> listaEntries;
+    Lista * listaEntries;
     void setFileEntry(char* n, int fB, int lB, bool isF, int s);
     void agregarFileEntry(FileEntry * fe);
     void escribirEntries(int pos);
     void setTamanoBloque(int tB);
+    Lista* getListaEntries();
     char * nombre;
     int tamanoBloque;
     int numBloque;

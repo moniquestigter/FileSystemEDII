@@ -10,6 +10,7 @@ BloqueFolder::BloqueFolder(char * nombre, int numB,int tamB,Archivo * archivo)
     archivo = archivo;
     fe = new FileEntry();
     cantArchivos = 0;
+    listaEntries = new Lista();
 }
 
 void BloqueFolder::setFileEntry(char* n, int fB, int lB, bool isF, int s)
@@ -29,14 +30,13 @@ void BloqueFolder::setTamanoBloque(int tB)
 
 void BloqueFolder::agregarFileEntry(FileEntry * fe)
 {
-    listaEntries.push_back(fe);
+    listaEntries->agregarALista(fe);
 }
 
-QList<FileEntry*> BloqueFolder::getListaEntries()
+Lista * BloqueFolder::getListaEntries()
 {
     return listaEntries;
 }
-
 
 
 void BloqueFolder::initFromChar(char * d)

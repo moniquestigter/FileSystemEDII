@@ -1,19 +1,19 @@
 #include "lista.h"
 
+
 Lista::Lista()
 {
     inicial == nullptr;
-    sig == nullptr;
     cant = 0;
 }
 
-void Lista::agregarALista(T * obj){
+void Lista::agregarALista(FileEntry * obj){
     if(inicial == nullptr){
         inicial = obj;
         cant++;
     }
     else{
-        temp = inicial->sig;
+        FileEntry * temp = inicial->sig;
         while(temp != nullptr){
             temp = temp->sig;
         }
@@ -22,17 +22,26 @@ void Lista::agregarALista(T * obj){
     }
 }
 
-int Lista::getCant(){
+int Lista::size(){
     return cant;
 }
 
-int Lista::buscar(T * nombre){
-    temp = inicial;
+int Lista::buscar(char * nombre){
+    FileEntry * temp = inicial;
     for(int a = 0; a<cant; a++){
-        if(temp->nom != nombre){
+        if(temp->getNombre() != nombre){
             temp = temp->sig;
         }
         return a;
     }
+}
+
+
+FileEntry * Lista::at(int pos){
+    FileEntry * temp = inicial;
+    for(int a = 0; a<pos; a++){
+        temp = temp->sig;
+    }
+    return temp;
 }
 

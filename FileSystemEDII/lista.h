@@ -1,18 +1,18 @@
 #ifndef LISTA_H
 #define LISTA_H
 
-template<class T>
+#include "fileentry.h"
+
 class Lista
 {
 public:
     Lista();
 
-    void agregarALista(T * obj);
-    int buscar(T * nombre);
-    int getCant();
-    T * inicial;
-    T * sig;
-    T * ant;
+    void agregarALista(FileEntry * obj);
+    int buscar(char * nombre);
+    FileEntry * at(int pos);
+    int size();
+    FileEntry * inicial;
 
     int cant;
 

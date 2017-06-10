@@ -7,7 +7,7 @@
 #include "Archivo.h"
 #include "BloqueFolder.h"
 #include "DiscoVirtual.h"
-#include <vector>
+#include "lista.h"
 #include <idxentry.h>
 #include <QHash>
 
@@ -34,7 +34,6 @@ public:
     int initFromChar(BloqueFolder * actual);
     void guardarEntries();
 
-private:
     int rootSize;
 
 };

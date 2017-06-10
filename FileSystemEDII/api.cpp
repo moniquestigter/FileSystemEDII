@@ -166,9 +166,9 @@ void API::guardarEntries()
     vector<BloqueFolder*> lista = dv->listaBloqueFolder;
     for(int x = 0;x<lista.size();x++)
     {
-        vector<FileEntry*> listaE = lista[x]->listaEntries;
-        for(int x = 0;x<listaE.size();x++)
-            escribirEntries(listaE[x],lista[x]);
+        Lista * listaE = lista.at(x)->listaEntries;
+        for(int x = 0;x<listaE->size();x++)
+            escribirEntries(listaE->at(x),lista.at(x));
     }
 
 }
@@ -195,7 +195,7 @@ void API::escribirEntries(FileEntry *fe,BloqueFolder * actual)
     pos+=4;
 
     dv->getArchivo()->abrir();
-    int x = actual->listaEntries.size();
+    int x = actual->listaEntries->size();
     dv->getArchivo()->escribir(data,4096*actual->fe->getFirstBLock()+x*48-48+4,48);
 }
 
@@ -204,13 +204,13 @@ void API::dir()
     vector<BloqueFolder*> lista = dv->listaBloqueFolder;
     for(int x = 0; x < lista.size();x++)
     {
-        vector<FileEntry*> listaE = lista[x]->listaEntries;
+        Lista * listaE = lista.at(x)->listaEntries;
         cout<<"Folder: ";
-        lista[x]->imprimirNombre();
+        lista.at(x)->imprimirNombre();
         cout<<""<<endl;
-        for(int y = 0; y < listaE.size();y++)
+        for(int y = 0; y < listaE->size();y++)
         {
-            listaE[y]->imprimirEntry();
+            listaE->at(y)->imprimirEntry();
             cout<<""<<endl;
         }
         cout<<"-------------------------"<<endl;
@@ -225,10 +225,10 @@ void API::dirFolderActual()
     cout<<"Folder Actual: ";
     dv->getFolderActual()->imprimirNombre();
     cout<<"Contenido del Folder: ";
-    vector<FileEntry*> lista = dv->getFolderActual()->listaEntries;
-    for(int y = 0; y < lista.size();y++)
+    Lista * lista = dv->getFolderActual()->listaEntries;
+    for(int y = 0; y < lista->size();y++)
     {
-        lista[y]->imprimirEntry();
+        lista->at(y)->imprimirEntry();
         cout<<""<<endl;
     }
     cout<<"-------------------------"<<endl;
