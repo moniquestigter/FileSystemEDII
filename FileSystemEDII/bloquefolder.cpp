@@ -33,6 +33,16 @@ void BloqueFolder::agregarFileEntry(FileEntry * fe)
 }
 
 
+<<<<<<< HEAD
+=======
+QList<FileEntry*> BloqueFolder::getListaEntries()
+{
+    return listaEntries;
+}
+
+void BloqueFolder::cargar()
+{
+>>>>>>> origin/master
 
 
 void BloqueFolder::initFromChar(char * d)
