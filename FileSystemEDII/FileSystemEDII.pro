@@ -28,19 +28,19 @@ SOURCES += main.cpp\
     api.cpp \
     archivo.cpp \
     bloquearchivo.cpp \
-    bloquefolder.cpp \
     discovirtual.cpp \
     fileentry.cpp \
-    masterblock.cpp
+    masterblock.cpp \
+    bloquefolder.cpp
 
 HEADERS  += mainwindow.h \
     api.h \
     archivo.h \
     bloquearchivo.h \
-    bloquefolder.h \
     discovirtual.h \
     fileentry.h \
-    masterblock.h
+    masterblock.h \
+    bloquefolder.h
 
 FORMS    += mainwindow.ui
 
