@@ -6,6 +6,7 @@
 #include <iostream>
 #include "Archivo.h"
 #include <vector>
+#include <QList>
 #include "MasterBlock.h"
 #include "FileEntry.h"
 
@@ -23,7 +24,7 @@ public:
 
     FileEntry * getFileEntry();
     void setFileEntry(char* n, int fB, int lB, bool isF, int s);
-    vector<FileEntry*> getListaEntries();
+    QList<FileEntry*> getListaEntries();
     void agregarFileEntry(FileEntry * fe);
     void escribirEntries(int pos);
     void imprimirNombre();
@@ -42,7 +43,7 @@ public:
 private:
     void initFromChar(char * d);
     Archivo * archivo;
-    vector<FileEntry*> listaEntries;
+    QList<FileEntry*> listaEntries;
     int tamanoBloque;
     int numBloque;
     char * nombre;

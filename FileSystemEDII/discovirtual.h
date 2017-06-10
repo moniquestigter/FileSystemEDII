@@ -6,6 +6,7 @@
 #include "Archivo.h"
 #include "MasterBlock.h"
 #include "BloqueFolder.h"
+#include <QList>
 
 class DiscoVirtual{
 public:
@@ -14,7 +15,7 @@ public:
     BloqueFolder * asignarSiguienteBloque(int numeroBloque);
     void formatear();
     void cargar();
-    vector<FileEntry*> listarArchivosEnRaiz();
+    QList<FileEntry*> listarArchivosEnRaiz();
 
     int getTamanoArchivo();
     int getTamanoBloque();
@@ -25,8 +26,8 @@ public:
     BloqueFolder * getRaiz();
     void setRaiz(BloqueFolder * bf);
 
-    vector<BloqueArchivo*> listaBloqueArchivo;
-    vector<BloqueFolder*> listaBloqueFolder;
+    QList<BloqueArchivo*> listaBloqueArchivo;
+    QList<BloqueFolder*> listaBloqueFolder;
 
 private:
     int tamArchivo,tamBloque;

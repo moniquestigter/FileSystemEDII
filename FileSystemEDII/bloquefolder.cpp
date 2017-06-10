@@ -69,7 +69,7 @@ void BloqueFolder::agregarFileEntry(FileEntry * fe)
 }
 
 
-vector<FileEntry*> BloqueFolder::getListaEntries()
+QList<FileEntry*> BloqueFolder::getListaEntries()
 {
     return listaEntries;
 }

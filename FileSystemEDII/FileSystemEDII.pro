@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     bloquefolder.cpp \
     discovirtual.cpp \
     fileentry.cpp \
-    masterblock.cpp
+    masterblock.cpp \
+    idxentry.cpp
 
 HEADERS  += mainwindow.h \
     api.h \
@@ -40,7 +41,8 @@ HEADERS  += mainwindow.h \
     bloquefolder.h \
     discovirtual.h \
     fileentry.h \
-    masterblock.h
+    masterblock.h \
+    idxentry.h
 
 FORMS    += mainwindow.ui
 
