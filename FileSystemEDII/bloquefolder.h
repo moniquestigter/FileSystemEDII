@@ -1,56 +1,61 @@
 #ifndef BLOQUEFOLDER_H
 #define BLOQUEFOLDER_H
-
-
-#include <stdio.h>
-#include <iostream>
 #include "Archivo.h"
+<<<<<<< HEAD
+=======
 #include <vector>
 #include <QList>
 #include "MasterBlock.h"
+>>>>>>> origin/master
 #include "FileEntry.h"
 
-using namespace std;
+#include <vector>
 
-class BloqueFolder{
+class BloqueFolder
+{
 public:
     BloqueFolder(char * nombre, int numB, int tamB,Archivo * archivo);
 
-    int getTamanoBloque();
-    void setTamanoBloque(int tB);
-
-    int getNumBloque();
-    char * getNombre();
-
-    FileEntry * getFileEntry();
-    void setFileEntry(char* n, int fB, int lB, bool isF, int s);
-    QList<FileEntry*> getListaEntries();
-    void agregarFileEntry(FileEntry * fe);
-    void escribirEntries(int pos);
     void imprimirNombre();
     void cargar();
-    void setNombre(char * n);
-    void setCantArchivos(BloqueFolder * actual);
+    void initFromChar(char * d);
 
-    BloqueFolder * getSiguiente();
-    BloqueFolder * getAnterior();
-    void setSiguiente(BloqueFolder * bf);
-    void setAnterior(BloqueFolder * bf);
-    Archivo * getArchivo();
-    int cantArchivos;
-    void setCant(BloqueFolder * actual);
+    Archivo * archivo;
 
+    FileEntry *fe;
+    vector<FileEntry *> listaEntries;
+    void setFileEntry(char* n, int fB, int lB, bool isF, int s);
+<<<<<<< HEAD
+=======
+    QList<FileEntry*> getListaEntries();
+>>>>>>> origin/master
+    void agregarFileEntry(FileEntry * fe);
+    void escribirEntries(int pos);
+    void setTamanoBloque(int tB);
+
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    char * nombre;
+=======
+private:
+>>>>>>> origin/master
     void initFromChar(char * d);
     Archivo * archivo;
     QList<FileEntry*> listaEntries;
+>>>>>>> origin/master
     int tamanoBloque;
     int numBloque;
-    char * nombre;
+
     BloqueFolder * siguiente;
     BloqueFolder * anterior;
-    FileEntry *fe;
+
+
+    int cantArchivos;
+    void setCantArchivos(BloqueFolder * actual);
+
+private:
+
 };
-
-
-
 #endif // BLOQUEFOLDER_H
+

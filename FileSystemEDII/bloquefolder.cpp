@@ -21,42 +21,6 @@ void BloqueFolder::setFileEntry(char* n, int fB, int lB, bool isF, int s)
     fe->setSize(s);
 }
 
-void BloqueFolder::setNombre(char * n)
-{
-    nombre = n;
-}
-
-
-Archivo * BloqueFolder::getArchivo()
-{
-    return archivo;
-}
-
-FileEntry * BloqueFolder::getFileEntry()
-{
-    return fe;
-}
-
-BloqueFolder * BloqueFolder::getSiguiente()
-{
-    return siguiente;
-}
-
-BloqueFolder * BloqueFolder::getAnterior()
-{
-    return anterior;
-}
-
-void BloqueFolder::setSiguiente(BloqueFolder * bf)
-{
-    siguiente = bf;
-}
-
-void BloqueFolder::setAnterior(BloqueFolder * bf)
-{
-    anterior = bf;
-}
-
 void BloqueFolder::setTamanoBloque(int tB)
 {
     tamanoBloque += tB;
@@ -69,6 +33,8 @@ void BloqueFolder::agregarFileEntry(FileEntry * fe)
 }
 
 
+<<<<<<< HEAD
+=======
 QList<FileEntry*> BloqueFolder::getListaEntries()
 {
     return listaEntries;
@@ -76,8 +42,8 @@ QList<FileEntry*> BloqueFolder::getListaEntries()
 
 void BloqueFolder::cargar()
 {
+>>>>>>> origin/master
 
-}
 
 void BloqueFolder::initFromChar(char * d)
 {
@@ -93,35 +59,14 @@ void BloqueFolder::setCantArchivos(BloqueFolder * actual)
 {
     char * nombre = {"DiscoVirtual.txt"};
     Archivo * arch = new Archivo(nombre,256*4096);
-    cantArchivos++;
+    cantArchivos+=1;
     char * cant = new char[4];
     memcpy(&cant[0], &cantArchivos, 4);
-    arch->escribir(cant,4096*actual->getFileEntry()->getFirstBLock(),4);
+    arch->abrir();
+    arch->escribir(cant,4096*actual->fe->getFirstBLock(),4);
+    cantArchivos+=1;
 }
 
-void BloqueFolder::setCant(BloqueFolder * actual){
-    char * nombre = {"DiscoVirtual.txt"};
-    Archivo * arch = new Archivo(nombre,256*4096);
-    int cantidad = 0;
-    char * cant = new char[4];
-    memcpy(&cant[0], &cantidad, 4);
-    arch->escribir(cant,4096*actual->getFileEntry()->getFirstBLock(),4);
-}
-
-char * BloqueFolder::getNombre()
-{
-    return nombre;
-}
-
-int BloqueFolder::getNumBloque()
-{
-    return numBloque;
-}
-
-int BloqueFolder::getTamanoBloque()
-{
-    return tamanoBloque;
-}
 
 
 void BloqueFolder::imprimirNombre()

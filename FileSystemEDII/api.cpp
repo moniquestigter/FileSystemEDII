@@ -10,8 +10,8 @@ int API::initFromChar(BloqueFolder * actual){
     Archivo * arch = new Archivo(nombre,256*4096);
 
 
-    int pos1 = actual->getFileEntry()->getFirstBLock()*4096;
-    int lon = ((actual->getFileEntry()->getLastBlock()-actual->getFileEntry()->getFirstBLock())+1)*4096;
+    int pos1 = actual->fe->getFirstBLock()*4096;
+    int lon = ((actual->fe->getLastBlock()-actual->fe->getFirstBLock())+1)*4096;
     char * data = arch->leer(pos1,lon);
 
     int pos = 0;
@@ -59,7 +59,7 @@ int API::leerArchivo(char * nombre,BloqueFolder * bf)
 {
     for(int x = 0;x<dv->listaBloqueArchivo.size();x++)
     {
-        char * n = dv->listaBloqueArchivo.at(x)->getNombre();
+        char * n = dv->listaBloqueArchivo.at(x)->nombre;
 
         if(strcmp(n, nombre)==0){
             cout<<"Contenido del Archivo: ";
@@ -76,7 +76,7 @@ int API::abrirFolder(char * nombre)
 {
     for(int x = 0;x<dv->listaBloqueFolder.size();x++)
     {
-        char * n = dv->listaBloqueFolder.at(x)->getNombre();
+        char * n = dv->listaBloqueFolder.at(x)->nombre;
 
         if(strcmp(n,nombre)==0)
         {
@@ -107,7 +107,6 @@ void API::addRoot(){
     BloqueFolder * bloque = new BloqueFolder(ra,1,0,dv->getArchivo());
     dv->getMasterBlock()->setSiguienteDisponible(pos+3);
     bloque->setFileEntry(ra,1,3,true,0);
-    bloque->setNombre(ra);
     dv->listaBloqueFolder.push_back(bloque);
     this->root = bloque;
 }
@@ -118,15 +117,15 @@ BloqueArchivo * API::crearArchivo(char * nombre, BloqueFolder * actual, char * c
     archivo->abrir();
     int pos = dv->getMasterBlock()->getSigDisponible();
     BloqueArchivo * ba = new BloqueArchivo(nombre,pos,strlen(contenido),dv->getArchivo());
-    //actual->getFileEntry()->setSize(strlen(contenido));
+    actual->fe->setSize(strlen(contenido));
     int size = strlen(contenido)/4096;
 
     if(size<1)
     {
         dv->getMasterBlock()->setSiguienteDisponible(pos+1);
         archivo->escribir(contenido,pos*4096,strlen(contenido));
-        //ba->setFileEntry(nombre,pos,pos,false,strlen(contenido));
-        //actual->agregarFileEntry(ba->getFileEntry());
+        ba->setFileEntry(nombre,pos,pos,false,strlen(contenido));
+        //actual->agregarFileEntry(ba->fe);
 
     }
 
@@ -136,11 +135,10 @@ BloqueArchivo * API::crearArchivo(char * nombre, BloqueFolder * actual, char * c
             size++;
         dv->getMasterBlock()->setSiguienteDisponible(pos+size);
         archivo->escribir(contenido,pos*4096,strlen(contenido));
-        //ba->setFileEntry(nombre,pos,pos+size,false,strlen(contenido));
-        //actual->agregarFileEntry(ba->getFileEntry());
+        ba->setFileEntry(nombre,pos,pos+size,false,strlen(contenido));
+        //actual->agregarFileEntry(ba->fe);
     }
     //actual->setCantArchivos(actual);
-    ba->setNombre(nombre);
     //escribirEntries(ba->getFileEntry(),actual);
     dv->listaBloqueArchivo.push_back(ba);
 
@@ -156,12 +154,10 @@ BloqueFolder * API::crearFolder(char * nombre,BloqueFolder * actual)
     dv->getMasterBlock()->setSiguienteDisponible(pos+1);
 
     bf->setFileEntry(nombre,pos,pos,true,0);
-    //actual->agregarFileEntry(bf->getFileEntry());
-    //escribirEntries(bf->getFileEntry(),actual);
+    //actual->agregarFileEntry(bf->fe);
+    //escribirEntries(bf->fe,actual);
     dv->listaBloqueFolder.push_back(bf);
-    bf->setNombre(nombre);
     //actual->setCantArchivos(actual);
-    bf->setCant(bf);
     return bf;
 }
 
@@ -170,7 +166,7 @@ void API::guardarEntries()
     vector<BloqueFolder*> lista = dv->listaBloqueFolder;
     for(int x = 0;x<lista.size();x++)
     {
-        vector<FileEntry*> listaE = lista[x]->getListaEntries();
+        vector<FileEntry*> listaE = lista[x]->listaEntries;
         for(int x = 0;x<listaE.size();x++)
             escribirEntries(listaE[x],lista[x]);
     }
@@ -199,8 +195,8 @@ void API::escribirEntries(FileEntry *fe,BloqueFolder * actual)
     pos+=4;
 
     dv->getArchivo()->abrir();
-    int x = actual->getListaEntries().size();
-    dv->getArchivo()->escribir(data,4096*actual->getFileEntry()->getFirstBLock()+x*48-48+4,48);
+    int x = actual->listaEntries.size();
+    dv->getArchivo()->escribir(data,4096*actual->fe->getFirstBLock()+x*48-48+4,48);
 }
 
 void API::dir()
@@ -208,7 +204,7 @@ void API::dir()
     vector<BloqueFolder*> lista = dv->listaBloqueFolder;
     for(int x = 0; x < lista.size();x++)
     {
-        vector<FileEntry*> listaE = lista[x]->getListaEntries();
+        vector<FileEntry*> listaE = lista[x]->listaEntries;
         cout<<"Folder: ";
         lista[x]->imprimirNombre();
         cout<<""<<endl;
@@ -229,7 +225,7 @@ void API::dirFolderActual()
     cout<<"Folder Actual: ";
     dv->getFolderActual()->imprimirNombre();
     cout<<"Contenido del Folder: ";
-    vector<FileEntry*> lista = dv->getFolderActual()->getListaEntries();
+    vector<FileEntry*> lista = dv->getFolderActual()->listaEntries;
     for(int y = 0; y < lista.size();y++)
     {
         lista[y]->imprimirEntry();

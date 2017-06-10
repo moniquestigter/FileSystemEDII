@@ -82,7 +82,7 @@ QList<FileEntry*> DiscoVirtual::listarArchivosEnRaiz()
     int numeroDeBloque = mb->getPrimerBloque();
 
     BloqueFolder * bf = new BloqueFolder("root",numeroDeBloque,0,getArchivo());
-    bf->cargar();
-    lista = bf->getListaEntries();
+    //bf->cargar();
+    lista = bf->listaEntries;
     return lista;
 }

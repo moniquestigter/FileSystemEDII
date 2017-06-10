@@ -28,23 +28,29 @@ SOURCES += main.cpp\
     api.cpp \
     archivo.cpp \
     bloquearchivo.cpp \
-    bloquefolder.cpp \
     discovirtual.cpp \
     fileentry.cpp \
     masterblock.cpp \
+<<<<<<< HEAD
     idxentry.cpp \
     lista.cpp
+=======
+    bloquefolder.cpp
+>>>>>>> origin/master
 
 HEADERS  += mainwindow.h \
     api.h \
     archivo.h \
     bloquearchivo.h \
-    bloquefolder.h \
     discovirtual.h \
     fileentry.h \
     masterblock.h \
+<<<<<<< HEAD
     idxentry.h \
     lista.h
+=======
+    bloquefolder.h
+>>>>>>> origin/master
 
 FORMS    += mainwindow.ui
 
