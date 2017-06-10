@@ -8,6 +8,8 @@
 #include "BloqueFolder.h"
 #include "DiscoVirtual.h"
 #include <vector>
+#include <idxentry.h>
+#include <QHash>
 
 using namespace std;
 

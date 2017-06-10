@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     discovirtual.cpp \
     fileentry.cpp \
     masterblock.cpp \
-    idxentry.cpp
+    idxentry.cpp \
+    lista.cpp
 
 HEADERS  += mainwindow.h \
     api.h \
@@ -42,7 +43,8 @@ HEADERS  += mainwindow.h \
     discovirtual.h \
     fileentry.h \
     masterblock.h \
-    idxentry.h
+    idxentry.h \
+    lista.h
 
 FORMS    += mainwindow.ui
 

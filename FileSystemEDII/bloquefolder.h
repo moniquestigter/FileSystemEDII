@@ -40,7 +40,6 @@ public:
     int cantArchivos;
     void setCant(BloqueFolder * actual);
 
-private:
     void initFromChar(char * d);
     Archivo * archivo;
     QList<FileEntry*> listaEntries;
