@@ -29,7 +29,6 @@ public:
     QList<BloqueArchivo*> listaBloqueArchivo;
     QList<BloqueFolder*> listaBloqueFolder;
 
-private:
     int tamArchivo,tamBloque;
     Archivo * archivo;
     MasterBlock * mb;

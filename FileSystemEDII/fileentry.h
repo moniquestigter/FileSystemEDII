@@ -27,7 +27,6 @@ public:
 
     void imprimirEntry();
 
-private:
     char* nombre;
     int firstBlock;
     int lastBlock;

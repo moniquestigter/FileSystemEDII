@@ -19,7 +19,7 @@ public:
     void guardar();
     char * masterBlockToChar();
     Archivo * archivo;
-private:
+
     MasterBlock * charToMasterBlock(char * c);
 
     void initFromChar(char * d);

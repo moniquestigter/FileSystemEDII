@@ -31,7 +31,10 @@ SOURCES += main.cpp\
     discovirtual.cpp \
     fileentry.cpp \
     masterblock.cpp \
-<<<<<<< HEAD
+<<<<<<< HEAD \
+    bloquefolder.cpp \
+    idxentry.cpp \
+    lista.cpp
     idxentry.cpp \
     lista.cpp
 =======
@@ -45,7 +48,10 @@ HEADERS  += mainwindow.h \
     discovirtual.h \
     fileentry.h \
     masterblock.h \
-<<<<<<< HEAD
+<<<<<<< HEAD \
+    bloquefolder.h \
+    idxentry.h \
+    lista.h
     idxentry.h \
     lista.h
 =======

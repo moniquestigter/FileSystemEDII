@@ -19,8 +19,6 @@ public:
     Archivo * archivo;
     void initFromChar(char * d);
 
-private:
-
 
 
 };

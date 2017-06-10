@@ -16,8 +16,6 @@ public:
     void cerrar();
     void setTamano(long pos);
     void formatear();
-
-private:
     FILE * file;
     char * nombre;
 };
