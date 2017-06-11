@@ -7,6 +7,7 @@ BloqueArchivo::BloqueArchivo(char * nombre, int numB,int tamB,Archivo * archivo)
     this->tamanoBloque = tamB;
     fe = new FileEntry();
     archivo = archivo;
+    item = NULL;
 }
 
 void BloqueArchivo::setFileEntry(char* n, int fB, int lB, bool isF, int s)

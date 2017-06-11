@@ -11,6 +11,7 @@ BloqueFolder::BloqueFolder(char * nombre, int numB,int tamB,Archivo * archivo)
     fe = new FileEntry();
     cantArchivos = 0;
     hashT = new HashTable();
+    item = NULL;
 }
 
 void BloqueFolder::setFileEntry(char* n, int fB, int lB, bool isF, int s)

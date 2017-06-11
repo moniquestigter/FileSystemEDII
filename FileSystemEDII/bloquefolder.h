@@ -1,6 +1,7 @@
 #ifndef BLOQUEFOLDER_H
 #define BLOQUEFOLDER_H
 #include "Archivo.h"
+#include <qtreewidget.h>
 #include <vector>
 #include "MasterBlock.h"
 #include "FileEntry.h"
@@ -34,6 +35,7 @@ public:
     vector<BloqueArchivo*> listaBloqueArchivo;
     vector<BloqueFolder*> listaBloqueFolder;
     void setNumBloquesEnIdx(int cant);
+    QTreeWidgetItem * item;
 
 };
 #endif // BLOQUEFOLDER_H

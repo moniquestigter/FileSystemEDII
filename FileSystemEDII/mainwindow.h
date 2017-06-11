@@ -35,7 +35,7 @@ private slots:
     void refrescar();
     void eventoArchivos();
     void eventoCarpetas();
-    string obtenerNodo();
+    char * obtenerNodo();
 
     void agregarLabel(char * nombre);
     void insertarCarpeta(char * nombre);
@@ -45,7 +45,6 @@ private slots:
     void on_btnAtras_clicked();
     void on_btnAdelante_clicked();
 
-
 private:
     Ui::MainWindow *ui;
     QTreeView * arbol;
@@ -53,9 +52,7 @@ private:
     string ruta;
     QList<QPushButton*> listaBotones;
     QList<QLabel*> listaEtiquetas;
-
     QMessageBox msgBox;
-
     API *api;
     BloqueFolder * folderActual;
     BloqueFolder * raiz;

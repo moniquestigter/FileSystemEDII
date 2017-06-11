@@ -6,6 +6,7 @@
 #include "FileEntry.h"
 #include "archivo.h"
 #include <string.h>
+#include <qtreewidget.h>
 
 class BloqueArchivo{
 public:
@@ -17,6 +18,7 @@ public:
     int numBloque;
     char * nombre;
     Archivo * archivo;
+    QTreeWidgetItem * item;
     void initFromChar(char * d);
 
 

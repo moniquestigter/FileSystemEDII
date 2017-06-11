@@ -9,7 +9,6 @@ int API::initFromChar(BloqueFolder * actual){
     char * nombre = {"DiscoVirtual.txt"};
     Archivo * arch = new Archivo(nombre,256*4096);
 
-
     int pos1 = actual->fe->getFirstBLock()*4096;
     int lon = ((actual->fe->getLastBlock()-actual->fe->getFirstBLock())+1)*4096;
     char * data = arch->leer(pos1,lon);
@@ -72,7 +71,7 @@ int API::leerArchivo(char * nombre,BloqueFolder * actual)
     return -1;
 }
 
-int API::abrirFolder(char * nombre,BloqueFolder * actual)
+BloqueFolder * API::abrirFolder(char * nombre,BloqueFolder * actual)
 {
     for(int x = 0;x < actual->listaBloqueFolder.size();x++)
     {
@@ -81,11 +80,10 @@ int API::abrirFolder(char * nombre,BloqueFolder * actual)
         if(strcmp(n,nombre)==0)
         {
             dv->setFolderActual(actual->listaBloqueFolder.at(x));
-            return 0;
+            return actual->listaBloqueFolder.at(x);
         }
     }
-    cout<<"No Existe"<<endl;
-    return -1;
+    return NULL;
 }
 
 void API::crearDiscoVirtual()
@@ -138,7 +136,6 @@ BloqueArchivo * API::crearArchivo(char * nombre, BloqueFolder * actual, char * c
     actual->setCantArchivos(actual);
     escribirEntries(ba->fe,actual);
     actual->listaBloqueArchivo.push_back(ba);
-
     return ba;
 }
 

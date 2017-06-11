@@ -27,12 +27,11 @@ public:
     void addRoot();
     BloqueFolder * root;
     DiscoVirtual * dv;
-    int abrirFolder(char * n,BloqueFolder * actual);
+    BloqueFolder * abrirFolder(char * n,BloqueFolder * actual);
     int leerArchivo(char * n,BloqueFolder * actual);
     int initFromChar(BloqueFolder * actual);
     void guardarEntries(BloqueFolder * actual);
     int rootSize;
-
 };
 
 #endif // API_H

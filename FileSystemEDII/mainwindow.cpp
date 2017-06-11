@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     raiz = api->root;
     folderActual = raiz;
     refrescar();
+    actual = NULL;
 }
 
 QTreeWidgetItem * MainWindow::AddRoot(QTreeWidgetItem * parent,QString nombre)
@@ -59,6 +60,7 @@ void MainWindow::insertarCarpeta(char * nombre)
         posX = 170;
         posY = posY+90;
     }
+
 }
 
 void MainWindow::insertarArchivo(char * nombre)
@@ -78,12 +80,21 @@ void MainWindow::insertarArchivo(char * nombre)
         posX = 170;
         posY = posY+90;
     }
+
 }
 
 
 void MainWindow::abrir_archivo()
 {
-
+    BloqueFolder * bf = api->abrirFolder(obtenerNodo(),folderActual);
+    if(bf!=NULL)
+    {
+        BloqueFolder * temp = folderActual;
+        folderActual = bf;
+        folderActual->anterior = temp;
+        actual = folderActual->item;
+        refrescar();
+    }
 }
 
 void MainWindow::leer_archivo()
@@ -92,14 +103,18 @@ void MainWindow::leer_archivo()
 }
 
 
-string MainWindow::obtenerNodo()
+char * MainWindow::obtenerNodo()
 {
     QPushButton* temp = qobject_cast<QPushButton *>(sender());
     if(temp!=NULL)
     {
         for(int x = 0;x<listaBotones.size();x++){
-            if(listaBotones.at(x)->objectName() == temp->objectName())
-                return temp->objectName().toStdString();
+            if(listaBotones.at(x)->objectName() == temp->objectName()){
+                string x = temp->objectName().toStdString();
+                char * nombre = (char *)malloc(temp->objectName().length());
+                strcpy( nombre, x.c_str() );
+                return nombre;
+            }
         }
     }
     return NULL;
@@ -144,9 +159,10 @@ void MainWindow::nuevaCarpeta()
     if(x != "")
     {
         BloqueFolder * bf = api->crearFolder(nombre,folderActual);
-        //bf->setItem(AddRoot(actual,QString::fromStdString(nombre)));
+        bf->item = AddRoot(actual,QString::fromStdString(nombre));
         insertarCarpeta(nombre);
     }
+
 }
 
 void MainWindow::nuevoArchivo()
@@ -155,18 +171,20 @@ void MainWindow::nuevoArchivo()
     string x_1 = x.toStdString();
     char * nombre = (char *)malloc(x.length());
     strcpy( nombre, x_1.c_str() );
+    if(x != ""){
+        QString x2 = QInputDialog::getText(this,"Contenido","Ingrese el contenido del archivo:");
+        string x2_1 = x2.toStdString();
+        char * contenido = (char *)malloc(x2.length());
+        strcpy( contenido, x2_1.c_str() );
 
-    QString x2 = QInputDialog::getText(this,"Contenido","Ingrese el contenido del archivo:");
-    string x2_1 = x2.toStdString();
-    char * contenido = (char *)malloc(x2.length());
-    strcpy( contenido, x2_1.c_str() );
 
+        if(x2 != "")
+        {
+            BloqueArchivo * ba = api->crearArchivo(nombre,folderActual,contenido);
+            ba->item = AddRoot(actual,QString::fromStdString(x_1));
+            insertarArchivo(nombre);
 
-    if(x != "")
-    {
-        BloqueArchivo * ba =api->crearArchivo(nombre,folderActual,contenido);
-        //ba->setItem(AddRoot(actual,QString::fromStdString(nombre)));
-        insertarArchivo(nombre);
+        }
     }
 }
 
@@ -226,12 +244,24 @@ void MainWindow::eventoCarpetas()
 
 void MainWindow::on_btnAtras_clicked()
 {
-
+    BloqueFolder * temp = folderActual;
+    if(folderActual->anterior!=NULL)
+    {
+        folderActual = folderActual->anterior;
+        folderActual->siguiente = temp;
+        actual = folderActual->item;
+        refrescar();
+    }
 }
 
 void MainWindow::on_btnAdelante_clicked()
 {
-
+    if(folderActual->siguiente != NULL)
+    {
+        folderActual = folderActual->siguiente;
+        actual = folderActual->item;
+        refrescar();
+    }
 }
 
 void MainWindow::refrescar()
@@ -248,13 +278,25 @@ void MainWindow::refrescar()
         listaEtiquetas.removeAt(x);
     }
 
+    vector<BloqueFolder*> folders = folderActual->listaBloqueFolder;
+    vector<BloqueArchivo*> archivos = folderActual->listaBloqueArchivo;
+
 
     cantBotones = 0;
     cantLabel = 0;
     posX = 170;
     posY = 80;
+    ui->lblRuta->setText(folderActual->nombre);
+
+    for(int x = 0; x<folders.size();x++)
+        insertarCarpeta(folders.at(x)->nombre);
+
+    for(int x = 0; x<archivos.size();x++)
+        insertarArchivo(archivos.at(x)->nombre);
 
 
-    ui->lblRuta->setText(ruta.c_str());
+
 }
+
+
 
