@@ -2,11 +2,10 @@
 #define BLOQUEFOLDER_H
 #include "Archivo.h"
 #include <vector>
-#include <QList>
 #include "MasterBlock.h"
 #include "FileEntry.h"
-
-#include "lista.h"
+#include "idxentry.h"
+#include "hashtable.h"
 
 class BloqueFolder
 {
@@ -19,12 +18,14 @@ public:
 
     Archivo * archivo;
     FileEntry *fe;
-    Lista * listaEntries;
+    HashTable * hashT;
+    vector<FileEntry*> listaEntries;
+
     void setFileEntry(char* n, int fB, int lB, bool isF, int s);
     void agregarFileEntry(FileEntry * fe);
     void escribirEntries(int pos);
     void setTamanoBloque(int tB);
-    Lista* getListaEntries();
+    vector<FileEntry*> getListaEntries();
     char * nombre;
     int tamanoBloque;
     int numBloque;

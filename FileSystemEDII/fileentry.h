@@ -16,6 +16,7 @@ public:
     char * getNombre();
     int getFirstBLock();
     int getLastBlock();
+    int getCode();
     bool getEsFolder();
     size_t getSize();
 
@@ -24,6 +25,8 @@ public:
     void setNombre(char * n);
     void setSize(size_t s);
     void setIsFolder(bool iF);
+    void setTodoFileEntry(char * nom, int first,int last, bool iF, size_t size);
+    void setIdxInfo(char * nom,)
 
     void imprimirEntry();
 
@@ -32,6 +35,7 @@ public:
     int lastBlock;
     bool isFolder;
     int size;
+    int code;
     FileEntry * sig;
 
 };

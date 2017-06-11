@@ -3,18 +3,18 @@
 
 Lista::Lista()
 {
-    inicial == nullptr;
+    inicial == NULL;
     cant = 0;
 }
 
 void Lista::agregarALista(FileEntry * obj){
-    if(inicial == nullptr){
+    if(inicial == NULL){
         inicial = obj;
         cant++;
     }
     else{
-        FileEntry * temp = inicial->sig;
-        while(temp != nullptr){
+        FileEntry * temp = inicial;
+        while(temp != NULL){
             temp = temp->sig;
         }
         temp = obj;

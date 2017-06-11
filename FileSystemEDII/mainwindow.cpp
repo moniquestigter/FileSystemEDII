@@ -9,9 +9,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     api = new API();
+
+    api->crearDiscoVirtual();
     raiz = api->root;
     folderActual = raiz;
-    api->crearDiscoVirtual();
+
 
     refrescar();
 }

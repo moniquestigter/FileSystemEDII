@@ -7,6 +7,7 @@
 #include "MasterBlock.h"
 #include "BloqueFolder.h"
 #include "lista.h"
+#include "hashtable.h"
 
 class DiscoVirtual{
 public:
@@ -28,6 +29,7 @@ public:
 
     vector<BloqueArchivo*> listaBloqueArchivo;
     vector<BloqueFolder*> listaBloqueFolder;
+    vector<HashTable*> listaHashTables;
 
     int tamArchivo,tamBloque;
     Archivo * archivo;

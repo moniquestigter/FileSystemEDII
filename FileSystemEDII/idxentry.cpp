@@ -5,6 +5,13 @@ IdxEntry::IdxEntry()
 
 }
 
+void IdxEntry::setTodo(char * nom,int nB, int nE){
+    nombre = nom;
+    numBloque = nB;
+    numEntry = nE;
+    cantIdxEntries++;
+}
+
 void IdxEntry::setNombre(char * nom){
     nombre = nom;
 }

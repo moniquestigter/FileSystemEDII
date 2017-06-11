@@ -7,6 +7,7 @@ FileEntry::FileEntry() {
     isFolder = false;
     size = 0;
     sig == nullptr;
+    code = 0;
 }
 void FileEntry::imprimirEntry()
 {
@@ -29,6 +30,15 @@ void FileEntry::imprimirEntry()
     cout<<getSize()<<endl;
 
 }
+
+ void FileEntry::setTodoFileEntry(char * nom, int first,int last, bool iF, size_t s){
+     nombre = nom;
+     firstBlock = first;
+     lastBlock = last;
+     isFolder = iF;
+     size = s;
+     code = code++;
+ }
 
 char * FileEntry::getNombre()
 {
@@ -78,6 +88,10 @@ bool FileEntry::getEsFolder()
 size_t FileEntry::getSize()
 {
     return size;
+}
+
+int FileEntry::getCode(){
+    return code;
 }
 
 

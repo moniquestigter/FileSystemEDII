@@ -9,7 +9,7 @@ public:
     void setNombre(char * nom);
     void setNumBloque(int num);
     void setNumEntry(int numE);
-    void setCantIdxEntries(int cant);
+    void setTodo(char * nom,int nB, int nE);
 
     char * getNombre();
     int getNumBloque();

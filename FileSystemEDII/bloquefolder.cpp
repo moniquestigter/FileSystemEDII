@@ -10,16 +10,17 @@ BloqueFolder::BloqueFolder(char * nombre, int numB,int tamB,Archivo * archivo)
     archivo = archivo;
     fe = new FileEntry();
     cantArchivos = 0;
-    listaEntries = new Lista();
+    hashT = new HashTable();
 }
 
 void BloqueFolder::setFileEntry(char* n, int fB, int lB, bool isF, int s)
 {
-    fe->setFirstBlock(fB);
-    fe->setIsFolder(isF);
-    fe->setLastBlock(lB);
-    fe->setNombre(n);
-    fe->setSize(s);
+    fe->setTodoFileEntry(n,fB,lB,isF,s);
+
+}
+
+void BloqueFolder::setNumBloquesEnIdx(int cant){
+    hashT->ie->setNumBloque(cant);
 }
 
 void BloqueFolder::setTamanoBloque(int tB)
@@ -30,10 +31,10 @@ void BloqueFolder::setTamanoBloque(int tB)
 
 void BloqueFolder::agregarFileEntry(FileEntry * fe)
 {
-    listaEntries->agregarALista(fe);
+    listaEntries.push_back(fe);
 }
 
-Lista * BloqueFolder::getListaEntries()
+vector<FileEntry*> BloqueFolder::getListaEntries()
 {
     return listaEntries;
 }
@@ -53,15 +54,12 @@ void BloqueFolder::setCantArchivos(BloqueFolder * actual)
 {
     char * nombre = {"DiscoVirtual.txt"};
     Archivo * arch = new Archivo(nombre,256*4096);
-    cantArchivos+=1;
     char * cant = new char[4];
     memcpy(&cant[0], &cantArchivos, 4);
     arch->abrir();
     arch->escribir(cant,4096*actual->fe->getFirstBLock(),4);
     cantArchivos+=1;
 }
-
-
 
 void BloqueFolder::imprimirNombre()
 {
