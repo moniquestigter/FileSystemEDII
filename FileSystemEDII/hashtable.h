@@ -1,8 +1,9 @@
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
 
-#include "discovirtual.h"
+
 #include <QHash>
+#include "FileEntry.h"
 #include "idxentry.h"
 
 class HashTable
@@ -13,7 +14,7 @@ public:
 
     IdxEntry * ie;
 
-    void setIdxEntry(char *n, int nB, int nE);
+    /*void setIdxEntry(char *n, int nB, int nE);
     void agregarIdxEntry(IdxEntry * ie);
     void addToTable(FileEntry * fe);
     void buscar(FileEntry * fe);
@@ -22,7 +23,7 @@ public:
     vector<IdxEntry*> getListaIdxEntries();
 
 
-    IdxEntry * buscar();
+    IdxEntry * buscar();*/
 };
 
 #endif // HASHTABLE_H

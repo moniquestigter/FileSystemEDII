@@ -5,7 +5,7 @@ HashTable::HashTable()
     ie = new IdxEntry();
 }
 
-void HashTable::setIdxEntry(char *n, int nB, int nE){
+/*void HashTable::setIdxEntry(char *n, int nB, int nE){
     ie->setTodo(n,nB,nE);
 }
 
@@ -34,5 +34,5 @@ void HashTable::buscar(BloqueFolder * bf, char * nom){
     int numB = hash(fiE->getNombre());
 
 }
-
+*/
 

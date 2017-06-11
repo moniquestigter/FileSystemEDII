@@ -13,8 +13,6 @@ MainWindow::MainWindow(QWidget *parent) :
     api->crearDiscoVirtual();
     raiz = api->root;
     folderActual = raiz;
-
-
     refrescar();
 }
 

@@ -61,11 +61,3 @@ void BloqueFolder::setCantArchivos(BloqueFolder * actual)
     cantArchivos+=1;
 }
 
-void BloqueFolder::imprimirNombre()
-{
-    char * n = nombre;
-    for(int x = 0;x<strlen(n);x++)
-        cout<<n[x];
-    cout<<""<<endl;
-
-}

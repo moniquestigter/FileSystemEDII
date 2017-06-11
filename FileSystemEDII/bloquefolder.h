@@ -12,10 +12,10 @@ class BloqueFolder
 public:
     BloqueFolder(char * nombre, int numB, int tamB,Archivo * archivo);
 
-    void imprimirNombre();
-    void cargar();
     void initFromChar(char * d);
-
+    char * nombre;
+    int tamanoBloque;
+    int numBloque;
     Archivo * archivo;
     FileEntry *fe;
     HashTable * hashT;
@@ -26,13 +26,15 @@ public:
     void escribirEntries(int pos);
     void setTamanoBloque(int tB);
     vector<FileEntry*> getListaEntries();
-    char * nombre;
-    int tamanoBloque;
-    int numBloque;
     BloqueFolder * siguiente;
     BloqueFolder * anterior;
     int cantArchivos;
+
     void setCantArchivos(BloqueFolder * actual);
+    vector<BloqueArchivo*> listaBloqueArchivo;
+    vector<BloqueFolder*> listaBloqueFolder;
+    void setNumBloquesEnIdx(int cant);
+
 };
 #endif // BLOQUEFOLDER_H
 

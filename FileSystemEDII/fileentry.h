@@ -26,7 +26,7 @@ public:
     void setSize(size_t s);
     void setIsFolder(bool iF);
     void setTodoFileEntry(char * nom, int first,int last, bool iF, size_t size);
-    void setIdxInfo(char * nom,)
+    void setIdxInfo(char * nom);
 
     void imprimirEntry();
 

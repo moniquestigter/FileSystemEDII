@@ -55,15 +55,15 @@ int API::initFromChar(BloqueFolder * actual){
     return 0;
 }
 
-int API::leerArchivo(char * nombre,BloqueFolder * bf)
+int API::leerArchivo(char * nombre,BloqueFolder * actual)
 {
-    for(int x = 0;x<dv->listaBloqueArchivo.size();x++)
+    for(int x = 0;x<actual->listaBloqueArchivo.size();x++)
     {
-        char * n = dv->listaBloqueArchivo.at(x)->nombre;
+        char * n = actual->listaBloqueArchivo.at(x)->nombre;
 
         if(strcmp(n, nombre)==0){
             cout<<"Contenido del Archivo: ";
-            dv->listaBloqueArchivo.at(x)->leer();
+            actual->listaBloqueArchivo.at(x)->leer();
             return 0;
         }
 
@@ -72,17 +72,15 @@ int API::leerArchivo(char * nombre,BloqueFolder * bf)
     return -1;
 }
 
-int API::abrirFolder(char * nombre)
+int API::abrirFolder(char * nombre,BloqueFolder * actual)
 {
-    for(int x = 0;x<dv->listaBloqueFolder.size();x++)
+    for(int x = 0;x < actual->listaBloqueFolder.size();x++)
     {
-        char * n = dv->listaBloqueFolder.at(x)->nombre;
+        char * n = actual->listaBloqueFolder.at(x)->nombre;
 
         if(strcmp(n,nombre)==0)
         {
-            dv->setFolderActual(dv->listaBloqueFolder.at(x));
-            cout<<"Folder Actual: ";
-            dv->listaBloqueFolder.at(x)->imprimirNombre();
+            dv->setFolderActual(actual->listaBloqueFolder.at(x));
             return 0;
         }
     }
@@ -107,7 +105,6 @@ void API::addRoot(){
     BloqueFolder * bloque = new BloqueFolder(ra,1,0,dv->getArchivo());
     dv->getMasterBlock()->setSiguienteDisponible(pos+3);
     bloque->setFileEntry(ra,1,3,true,0);
-    dv->listaBloqueFolder.push_back(bloque);
     this->root = bloque;
 }
 
@@ -117,7 +114,7 @@ BloqueArchivo * API::crearArchivo(char * nombre, BloqueFolder * actual, char * c
     archivo->abrir();
     int pos = dv->getMasterBlock()->getSigDisponible();
     BloqueArchivo * ba = new BloqueArchivo(nombre,pos,strlen(contenido),dv->getArchivo());
-    //actual->fe->setSize(strlen(contenido));
+    actual->fe->setSize(strlen(contenido));
     int size = strlen(contenido)/4096;
 
     if(size<1)
@@ -139,8 +136,8 @@ BloqueArchivo * API::crearArchivo(char * nombre, BloqueFolder * actual, char * c
         actual->agregarFileEntry(ba->fe);
     }
     actual->setCantArchivos(actual);
-    //escribirEntries(ba->getFileEntry(),actual);
-    dv->listaBloqueArchivo.push_back(ba);
+    escribirEntries(ba->fe,actual);
+    actual->listaBloqueArchivo.push_back(ba);
 
     return ba;
 }
@@ -155,23 +152,23 @@ BloqueFolder * API::crearFolder(char * nombre,BloqueFolder * actual)
 
     bf->setFileEntry(nombre,pos,pos,true,0);
     actual->agregarFileEntry(bf->fe);
-    //escribirEntries(bf->fe,actual);
-    dv->listaBloqueFolder.push_back(bf);
+    escribirEntries(bf->fe,actual);
+    actual->listaBloqueFolder.push_back(bf);
     actual->setCantArchivos(actual);
     return bf;
 }
 
-void API::guardarEntries()
+/*void API::guardarEntries(BloqueFolder * actual)
 {
-    vector<BloqueFolder*> lista = dv->listaBloqueFolder;
+    vector<BloqueFolder*> lista = actual->listaBloqueFolder;
     for(int x = 0;x<lista.size();x++)
     {
-        Lista * listaE = lista.at(x)->listaEntries;
-        for(int x = 0;x<listaE->size();x++)
-            escribirEntries(listaE->at(x),lista.at(x));
+       vector<FileEntry*> listaE = lista.at(x).listaEntries;
+        for(int x = 0;x<listaE.size();x++)
+            escribirEntries(listaE.at(x),lista.at(x));
     }
 
-}
+}*/
 
 void API::escribirEntries(FileEntry *fe,BloqueFolder * actual)
 {
@@ -195,41 +192,9 @@ void API::escribirEntries(FileEntry *fe,BloqueFolder * actual)
     pos+=4;
 
     dv->getArchivo()->abrir();
-    int x = actual->listaEntries->size();
+    int x = actual->listaEntries.size();
     dv->getArchivo()->escribir(data,4096*actual->fe->getFirstBLock()+x*48-48+4,48);
 }
 
-void API::dir()
-{
-    vector<BloqueFolder*> lista = dv->listaBloqueFolder;
-    for(int x = 0; x < lista.size();x++)
-    {
-        Lista * listaE = lista.at(x)->listaEntries;
-        cout<<"Folder: ";
-        lista.at(x)->imprimirNombre();
-        cout<<""<<endl;
-        for(int y = 0; y < listaE->size();y++)
-        {
-            listaE->at(y)->imprimirEntry();
-            cout<<""<<endl;
-        }
-        cout<<"-------------------------"<<endl;
-        cout<<""<<endl;
-    }
-}
 
-void API::dirFolderActual()
-{
-    cout<<""<<endl;
-    cout<<"-------------------------"<<endl;
-    cout<<"Folder Actual: ";
-    dv->getFolderActual()->imprimirNombre();
-    cout<<"Contenido del Folder: ";
-    Lista * lista = dv->getFolderActual()->listaEntries;
-    for(int y = 0; y < lista->size();y++)
-    {
-        lista->at(y)->imprimirEntry();
-        cout<<""<<endl;
-    }
-    cout<<"-------------------------"<<endl;
-}
+

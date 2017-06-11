@@ -11,6 +11,8 @@ public:
     void setNumEntry(int numE);
     void setTodo(char * nom,int nB, int nE);
 
+    void setCantIdxEntries(int cant);
+
     char * getNombre();
     int getNumBloque();
     int getNumEntry();

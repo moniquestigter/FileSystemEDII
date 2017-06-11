@@ -17,9 +17,7 @@ class API
 {
 public:
     API();
-    void dir();
-    void dirFolderActual();
-    void printRoot();
+
     void crearDiscoVirtual();
 
     BloqueArchivo * crearArchivo(char * nombre, BloqueFolder * actual, char * contenido);
@@ -29,11 +27,10 @@ public:
     void addRoot();
     BloqueFolder * root;
     DiscoVirtual * dv;
-    int abrirFolder(char * n);
-    int leerArchivo(char * n,BloqueFolder * bf);
+    int abrirFolder(char * n,BloqueFolder * actual);
+    int leerArchivo(char * n,BloqueFolder * actual);
     int initFromChar(BloqueFolder * actual);
-    void guardarEntries();
-
+    void guardarEntries(BloqueFolder * actual);
     int rootSize;
 
 };
