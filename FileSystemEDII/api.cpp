@@ -5,6 +5,17 @@ API::API()
     rootSize = 0;
 }
 
+void API::formatear()
+{
+    FILE * file = fopen("DiscoVirtual.txt","w");
+    fseek(file,4096*256,SEEK_SET);
+    fputc('\0',file);
+    fclose(file);
+    dv->listaBloqueArchivo.clear();
+    dv->listaBloqueFolder.clear();
+    crearDiscoVirtual();
+}
+
 int API::initFromChar(BloqueFolder * actual){
     char * nombre = {"DiscoVirtual.txt"};
     Archivo * arch = new Archivo(nombre,256*4096);
@@ -43,32 +54,33 @@ int API::initFromChar(BloqueFolder * actual){
         if(esFolder == true)
         {
             BloqueFolder * bf = crearFolder(nombre2,actual);
-            return initFromChar(bf);
+            actual->listaBloqueFolder.push_back(bf);
+            //return initFromChar(bf);
         }
         else
         {
             char * d = arch->leer(firstBlock*4096,size);
-            crearArchivo(nombre2,actual,d);
+            BloqueArchivo * ba = crearArchivo(nombre2,actual,d);
+            actual ->listaBloqueArchivo.push_back(ba);
         }
     }
     return 0;
 }
 
-int API::leerArchivo(char * nombre,BloqueFolder * actual)
+char * API::leerArchivo(char * nombre,BloqueFolder * actual)
 {
-    for(int x = 0;x<actual->listaBloqueArchivo.size();x++)
+    char * contenido = {""};
+    for(int x = 0;x < actual->listaBloqueArchivo.size();x++)
     {
         char * n = actual->listaBloqueArchivo.at(x)->nombre;
 
-        if(strcmp(n, nombre)==0){
-            cout<<"Contenido del Archivo: ";
-            actual->listaBloqueArchivo.at(x)->leer();
-            return 0;
+        if(strcmp(n,nombre)==0)
+        {
+            contenido = actual->listaBloqueArchivo.at(x)->leer();
+            return contenido;
         }
-
     }
-    cout<<"Archivo no Existe"<<endl;
-    return -1;
+    return contenido;
 }
 
 BloqueFolder * API::abrirFolder(char * nombre,BloqueFolder * actual)
@@ -104,6 +116,9 @@ void API::addRoot(){
     dv->getMasterBlock()->setSiguienteDisponible(pos+3);
     bloque->setFileEntry(ra,1,3,true,0);
     this->root = bloque;
+    root->listaBloqueArchivo.clear();
+    root->listaBloqueFolder.clear();
+
 }
 
 BloqueArchivo * API::crearArchivo(char * nombre, BloqueFolder * actual, char * contenido)
@@ -136,6 +151,7 @@ BloqueArchivo * API::crearArchivo(char * nombre, BloqueFolder * actual, char * c
     actual->setCantArchivos(actual);
     escribirEntries(ba->fe,actual);
     actual->listaBloqueArchivo.push_back(ba);
+    dv->listaBloqueArchivo.push_back(ba);
     return ba;
 }
 
@@ -151,21 +167,10 @@ BloqueFolder * API::crearFolder(char * nombre,BloqueFolder * actual)
     actual->agregarFileEntry(bf->fe);
     escribirEntries(bf->fe,actual);
     actual->listaBloqueFolder.push_back(bf);
+    dv->listaBloqueFolder.push_back(bf);
     actual->setCantArchivos(actual);
     return bf;
 }
-
-/*void API::guardarEntries(BloqueFolder * actual)
-{
-    vector<BloqueFolder*> lista = actual->listaBloqueFolder;
-    for(int x = 0;x<lista.size();x++)
-    {
-       vector<FileEntry*> listaE = lista.at(x).listaEntries;
-        for(int x = 0;x<listaE.size();x++)
-            escribirEntries(listaE.at(x),lista.at(x));
-    }
-
-}*/
 
 void API::escribirEntries(FileEntry *fe,BloqueFolder * actual)
 {

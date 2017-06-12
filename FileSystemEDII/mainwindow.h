@@ -45,6 +45,10 @@ private slots:
     void on_btnAtras_clicked();
     void on_btnAdelante_clicked();
 
+    void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
+
 private:
     Ui::MainWindow *ui;
     QTreeView * arbol;

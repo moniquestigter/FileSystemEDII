@@ -35,10 +35,7 @@ char * BloqueArchivo::leer()
 {
     char * nombre = {"DiscoVirtual.txt"};
     Archivo * arch = new Archivo(nombre,256*4096);
-    char * a = arch->leer(numBloque*4096,fe->getSize());
-    for(int x =0; x<strlen(a)+1;x++)
-        cout<<a[x];
-    cout<<""<<endl;
+    char * a = arch->leer(numBloque*4096,tamanoBloque);
     return a;
 }
 

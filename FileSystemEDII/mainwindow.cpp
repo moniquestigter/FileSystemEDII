@@ -13,8 +13,9 @@ MainWindow::MainWindow(QWidget *parent) :
     api->crearDiscoVirtual();
     raiz = api->root;
     folderActual = raiz;
-    refrescar();
     actual = NULL;
+
+    refrescar();
 }
 
 QTreeWidgetItem * MainWindow::AddRoot(QTreeWidgetItem * parent,QString nombre)
@@ -99,6 +100,14 @@ void MainWindow::abrir_archivo()
 
 void MainWindow::leer_archivo()
 {
+
+        char * contenido = api->leerArchivo(obtenerNodo(),folderActual);
+        QMessageBox msgBox;
+        std::string str = std::string(contenido);
+        QString qstr = QString::fromStdString(str);
+        QString q = "Hola";
+        msgBox.setText(qstr);
+        msgBox.exec();
 
 }
 
@@ -294,9 +303,19 @@ void MainWindow::refrescar()
     for(int x = 0; x<archivos.size();x++)
         insertarArchivo(archivos.at(x)->nombre);
 
-
-
 }
 
+void MainWindow::on_pushButton_clicked()
+{
+     api->formatear();
+     folderActual = api->root;
+     actual = folderActual->item;
+     ui->treeWidget->clear();
+     refrescar();
+}
 
-
+void MainWindow::on_pushButton_2_clicked()
+{
+    api->initFromChar(folderActual);
+    refrescar();
+}

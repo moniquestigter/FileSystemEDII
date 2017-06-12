@@ -22,15 +22,14 @@ public:
 
     BloqueArchivo * crearArchivo(char * nombre, BloqueFolder * actual, char * contenido);
     BloqueFolder * crearFolder(char * nombre,BloqueFolder * actual);
-
+    void formatear();
     void escribirEntries(FileEntry *fe,BloqueFolder * actual);
     void addRoot();
     BloqueFolder * root;
     DiscoVirtual * dv;
     BloqueFolder * abrirFolder(char * n,BloqueFolder * actual);
-    int leerArchivo(char * n,BloqueFolder * actual);
+    char * leerArchivo(char * n,BloqueFolder * actual);
     int initFromChar(BloqueFolder * actual);
-    void guardarEntries(BloqueFolder * actual);
     int rootSize;
 };
 

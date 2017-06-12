@@ -29,6 +29,8 @@ public:
     BloqueFolder * getRaiz();
     void setRaiz(BloqueFolder * bf);
     BloqueFolder * raiz;
+    vector<BloqueArchivo*> listaBloqueArchivo;
+    vector<BloqueFolder*> listaBloqueFolder;
 
 private:
 
