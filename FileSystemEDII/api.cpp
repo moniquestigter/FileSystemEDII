@@ -21,12 +21,14 @@ int API::initFromChar(BloqueFolder * actual){
     Archivo * arch = new Archivo(nombre,256*4096);
 
     int pos1 = actual->fe->getFirstBLock()*4096;
-    int lon = ((actual->fe->getLastBlock()-actual->fe->getFirstBLock())+1)*4096;
+    int lon = (actual->fe->getLastBlock() - actual->fe->getFirstBLock()+1)*4096;
     char * data = arch->leer(pos1,lon);
+
 
     int pos = 0;
     int cant;
     memcpy(&cant, &(data[pos]), 4);
+    cant++;
     pos += 4;
 
     for(int x = 0;x<cant;x++){
@@ -54,17 +56,15 @@ int API::initFromChar(BloqueFolder * actual){
         if(esFolder == true)
         {
             BloqueFolder * bf = crearFolder(nombre2,actual);
-            actual->listaBloqueFolder.push_back(bf);
             //return initFromChar(bf);
         }
         else
         {
             char * d = arch->leer(firstBlock*4096,size);
-            BloqueArchivo * ba = crearArchivo(nombre2,actual,d);
-            actual ->listaBloqueArchivo.push_back(ba);
+            crearArchivo(nombre2,actual,d);
         }
     }
-    return 0;
+    return cant;
 }
 
 char * API::leerArchivo(char * nombre,BloqueFolder * actual)

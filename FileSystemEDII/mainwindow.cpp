@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     raiz = api->root;
     folderActual = raiz;
     actual = NULL;
-
+    api->initFromChar(folderActual);
     refrescar();
 }
 
@@ -288,6 +288,7 @@ void MainWindow::refrescar()
     }
 
     vector<BloqueFolder*> folders = folderActual->listaBloqueFolder;
+
     vector<BloqueArchivo*> archivos = folderActual->listaBloqueArchivo;
 
 
@@ -316,6 +317,6 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    api->initFromChar(folderActual);
+
     refrescar();
 }
