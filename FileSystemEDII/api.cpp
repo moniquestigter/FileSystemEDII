@@ -1,5 +1,8 @@
 #include "api.h"
 
+#include <qmessagebox.h>
+
+
 API::API()
 {
     rootSize = 0;
@@ -13,6 +16,7 @@ void API::formatear()
     fclose(file);
     dv->listaBloqueArchivo.clear();
     dv->listaBloqueFolder.clear();
+    nombres.clear();
     crearDiscoVirtual();
 }
 
@@ -28,7 +32,6 @@ int API::initFromChar(BloqueFolder * actual){
     int pos = 0;
     int cant;
     memcpy(&cant, &(data[pos]), 4);
-    cant++;
     pos += 4;
 
     for(int x = 0;x<cant;x++){
@@ -56,7 +59,7 @@ int API::initFromChar(BloqueFolder * actual){
         if(esFolder == true)
         {
             BloqueFolder * bf = crearFolder(nombre2,actual);
-            //return initFromChar(bf);
+            return initFromChar(bf);
         }
         else
         {
@@ -123,6 +126,7 @@ void API::addRoot(){
 
 BloqueArchivo * API::crearArchivo(char * nombre, BloqueFolder * actual, char * contenido)
 {
+    actual->setCantArchivos(actual);
     Archivo * archivo = dv->getArchivo();
     archivo->abrir();
     int pos = dv->getMasterBlock()->getSigDisponible();
@@ -148,15 +152,17 @@ BloqueArchivo * API::crearArchivo(char * nombre, BloqueFolder * actual, char * c
         ba->setFileEntry(nombre,pos,pos+size,false,strlen(contenido));
         actual->agregarFileEntry(ba->fe);
     }
-    actual->setCantArchivos(actual);
+
     escribirEntries(ba->fe,actual);
     actual->listaBloqueArchivo.push_back(ba);
     dv->listaBloqueArchivo.push_back(ba);
+    nombres.push_back(nombre);
     return ba;
 }
 
 BloqueFolder * API::crearFolder(char * nombre,BloqueFolder * actual)
 {
+    actual->setCantArchivos(actual);
     Archivo * archivo = dv->getArchivo();
     int pos = dv->getMasterBlock()->getSigDisponible();
 
@@ -168,7 +174,8 @@ BloqueFolder * API::crearFolder(char * nombre,BloqueFolder * actual)
     escribirEntries(bf->fe,actual);
     actual->listaBloqueFolder.push_back(bf);
     dv->listaBloqueFolder.push_back(bf);
-    actual->setCantArchivos(actual);
+
+    nombres.push_back(nombre);
     return bf;
 }
 
@@ -198,5 +205,36 @@ void API::escribirEntries(FileEntry *fe,BloqueFolder * actual)
     dv->getArchivo()->escribir(data,4096*actual->fe->getFirstBLock()+x*48-48+4,48);
 }
 
+string API::duplicadosAux(string nombre, int cant,int tamanoPalabra,int tipo)
+{
+    string a = nombre;
 
+    for(int x = 0;x<nombres.size();x++)
+    {
+        char * charTemp = nombres.at(x);
+        std::string n(charTemp);
+        if(toLowerCase(n) == toLowerCase(nombre))
+        {
+            string z = to_string(cant);
+            if(nombre.size() > tamanoPalabra)
+                a = a.substr(0,nombre.size()-2);
+            return duplicadosAux(a+"_"+z,cant+1,tamanoPalabra,tipo);
+        }
+    }
+    return nombre;
+}
+
+string API::Duplicados(string nombre,int tipo)
+{
+    return duplicadosAux(nombre,1,nombre.size(),tipo);
+}
+
+string API::toLowerCase(string palabra)
+{
+    locale loc;
+    string palabraNueva;
+    for (string::size_type i=0; i<palabra.length(); ++i)
+        palabraNueva = palabraNueva+tolower(palabra[i],loc);
+    return palabraNueva;
+}
 

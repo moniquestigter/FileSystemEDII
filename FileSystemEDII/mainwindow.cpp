@@ -162,6 +162,7 @@ void MainWindow::nuevaCarpeta()
 {
     QString x = QInputDialog::getText(this,"Nueva Carpeta","Ingrese el Nombre de la Carpeta:");
     string x_1 = x.toStdString();
+    x_1 = api->Duplicados(x_1,2);
     char * nombre = (char *)malloc(x.length());
     strcpy( nombre, x_1.c_str() );
 
@@ -178,6 +179,7 @@ void MainWindow::nuevoArchivo()
 {
     QString x = QInputDialog::getText(this,"Nuevo Archivo de Texto","Ingrese el Nombre del Archivo:");
     string x_1 = x.toStdString();
+    x_1 = api->Duplicados(x_1,1);
     char * nombre = (char *)malloc(x.length());
     strcpy( nombre, x_1.c_str() );
     if(x != ""){
@@ -186,11 +188,10 @@ void MainWindow::nuevoArchivo()
         char * contenido = (char *)malloc(x2.length());
         strcpy( contenido, x2_1.c_str() );
 
-
         if(x2 != "")
         {
             BloqueArchivo * ba = api->crearArchivo(nombre,folderActual,contenido);
-            ba->item = AddRoot(actual,QString::fromStdString(x_1));
+            ba->item = AddRoot(actual,QString::fromStdString(nombre));
             insertarArchivo(nombre);
 
         }
@@ -287,6 +288,7 @@ void MainWindow::refrescar()
         listaEtiquetas.removeAt(x);
     }
 
+    //ui->treeWidget->clear();
     vector<BloqueFolder*> folders = folderActual->listaBloqueFolder;
 
     vector<BloqueArchivo*> archivos = folderActual->listaBloqueArchivo;
@@ -298,17 +300,25 @@ void MainWindow::refrescar()
     posY = 80;
     ui->lblRuta->setText(folderActual->nombre);
 
-    for(int x = 0; x<folders.size();x++)
+    for(int x = 0; x<folders.size();x++){
         insertarCarpeta(folders.at(x)->nombre);
-
+        /*string n;
+        n.assign(folders.at(x)->nombre,strlen(folders.at(x)->nombre));
+        AddRoot(actual,QString::fromStdString(n));*/
+    }
     for(int x = 0; x<archivos.size();x++)
+    {
         insertarArchivo(archivos.at(x)->nombre);
-
+        /*string n;
+        n.assign(archivos.at(x)->nombre,strlen(archivos.at(x)->nombre));
+        AddRoot(actual,QString::fromStdString(n));*/
+    }
 }
 
 void MainWindow::on_pushButton_clicked()
 {
      api->formatear();
+
      folderActual = api->root;
      actual = folderActual->item;
      ui->treeWidget->clear();

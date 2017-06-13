@@ -53,12 +53,13 @@ void BloqueFolder::initFromChar(char * d)
 }
 void BloqueFolder::setCantArchivos(BloqueFolder * actual)
 {
+    cantArchivos+=1;
     char * nombre = {"DiscoVirtual.txt"};
     Archivo * arch = new Archivo(nombre,256*4096);
     char * cant = new char[4];
     memcpy(&cant[0], &cantArchivos, 4);
     arch->abrir();
     arch->escribir(cant,4096*actual->fe->getFirstBLock(),4);
-    cantArchivos+=1;
+
 }
 

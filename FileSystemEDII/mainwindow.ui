@@ -119,23 +119,6 @@
        <normaloff>:/jixzMaA5T.png</normaloff>:/jixzMaA5T.png</iconset>
      </property>
     </widget>
-    <widget class="QPushButton" name="btnPegar">
-     <property name="geometry">
-      <rect>
-       <x>630</x>
-       <y>10</y>
-       <width>71</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Pegar</string>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>:/Imagenes/thin-0255_paste_clipboard-512.png</normaloff>:/Imagenes/thin-0255_paste_clipboard-512.png</iconset>
-     </property>
-    </widget>
     <widget class="QTreeWidget" name="treeWidget">
      <property name="geometry">
       <rect>
@@ -155,26 +138,13 @@
      <property name="geometry">
       <rect>
        <x>630</x>
-       <y>40</y>
+       <y>10</y>
        <width>71</width>
        <height>23</height>
       </rect>
      </property>
      <property name="text">
       <string>Formatear</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_2">
-     <property name="geometry">
-      <rect>
-       <x>630</x>
-       <y>80</y>
-       <width>75</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>PushButton</string>
      </property>
     </widget>
    </widget>

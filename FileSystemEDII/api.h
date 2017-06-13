@@ -30,7 +30,14 @@ public:
     BloqueFolder * abrirFolder(char * n,BloqueFolder * actual);
     char * leerArchivo(char * n,BloqueFolder * actual);
     int initFromChar(BloqueFolder * actual);
+    string Duplicados(string nombre,int tipo);
+    vector<char *> nombres;
+
     int rootSize;
+
+private:
+    string duplicadosAux(string nombre, int cant,int tamanoPalabra,int tipo);
+    string toLowerCase(string palabra);
 };
 
 #endif // API_H
