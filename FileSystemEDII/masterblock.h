@@ -7,7 +7,8 @@
 #include "BloqueArchivo.h"
 #include "Archivo.h"
 
-class MasterBlock{
+class MasterBlock
+{
 public:
     MasterBlock(Archivo * archivo,int tam, int cantB, int first, int sigDisp);
     int getTamanoBloque();
@@ -15,7 +16,7 @@ public:
     int getPrimerBloque();
     int getSigDisponible();
     void setSiguienteDisponible(int x);
-    void cargar();
+    MasterBlock * cargar();
     void guardar();
     char * masterBlockToChar();
     Archivo * archivo;

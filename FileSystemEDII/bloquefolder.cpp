@@ -10,7 +10,6 @@ BloqueFolder::BloqueFolder(char * nombre, int numB,int tamB,Archivo * archivo)
     archivo = archivo;
     fe = new FileEntry();
     cantArchivos = 0;
-    hashT = new HashTable();
     item = NULL;
 }
 
@@ -20,9 +19,7 @@ void BloqueFolder::setFileEntry(char* n, int fB, int lB, bool isF, int s)
 
 }
 
-void BloqueFolder::setNumBloquesEnIdx(int cant){
-    hashT->ie->setNumBloque(cant);
-}
+
 
 void BloqueFolder::setTamanoBloque(int tB)
 {
@@ -60,6 +57,7 @@ void BloqueFolder::setCantArchivos(BloqueFolder * actual)
     memcpy(&cant[0], &cantArchivos, 4);
     arch->abrir();
     arch->escribir(cant,4096*actual->fe->getFirstBLock(),4);
-
 }
+
+
 

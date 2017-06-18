@@ -1,6 +1,8 @@
 #ifndef IDXENTRY_H
 #define IDXENTRY_H
-
+#include <stdio.h>
+#include <iostream>
+using namespace std;
 
 class IdxEntry
 {
@@ -10,8 +12,6 @@ public:
     void setNumBloque(int num);
     void setNumEntry(int numE);
     void setTodo(char * nom,int nB, int nE);
-
-    void setCantIdxEntries(int cant);
 
     char * getNombre();
     int getNumBloque();

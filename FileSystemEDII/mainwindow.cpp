@@ -47,13 +47,13 @@ void MainWindow::insertarCarpeta(char * nombre)
 {
     agregarLabel(nombre);
     QPushButton * folder = new QPushButton(this);
-    listaBotones.append(folder);
-    listaBotones.at(cantBotones)->setObjectName(QString::fromStdString(nombre));
-    listaBotones.at(cantBotones)->setGeometry(QRect(QPoint(posX, posY),QSize(50, 50)));
-    listaBotones.at(cantBotones)->setStyleSheet("border-image: url(:/Folders-PNG-File.png);");
-    listaBotones.at(cantBotones)->show();
 
-    connect(listaBotones.at(cantBotones), SIGNAL (released()),this, SLOT (eventoCarpetas()));
+    folder->setObjectName(QString::fromStdString(nombre));
+    folder->setGeometry(QRect(QPoint(posX, posY),QSize(50, 50)));
+    folder->setStyleSheet("border-image: url(:/Folders-PNG-File.png);");
+    folder->show();
+    connect(folder, SIGNAL (released()),this, SLOT (abrir_archivo()));
+    listaBotones.append(folder);
     cantBotones++;
     posX = posX + 80;
     if(posX >=600)
@@ -61,27 +61,28 @@ void MainWindow::insertarCarpeta(char * nombre)
         posX = 170;
         posY = posY+90;
     }
-
 }
+
 
 void MainWindow::insertarArchivo(char * nombre)
 {
     agregarLabel(nombre);
     QPushButton * file = new QPushButton(this);
+
+    file->setObjectName(QString::fromStdString(nombre));
+    file->setGeometry(QRect(QPoint(posX, posY),QSize(60, 60)));
+    file->setStyleSheet("border-image: url(:/Docs-icon-iloveimg-resized.png);");
+    file->show();
+    connect(file, SIGNAL (released()),this, SLOT (leer_archivo()));
     listaBotones.append(file);
-    listaBotones.at(cantBotones)->setObjectName(QString::fromStdString(nombre));
-    listaBotones.at(cantBotones)->setGeometry(QRect(QPoint(posX, posY),QSize(60, 60)));
-    listaBotones.at(cantBotones)->setStyleSheet("border-image: url(:/Docs-icon-iloveimg-resized.png);");
-    listaBotones.at(cantBotones)->show();
-    connect(listaBotones.at(cantBotones), SIGNAL (released()),this, SLOT (eventoArchivos()));
     cantBotones++;
+
     posX = posX + 80;
     if(posX >=600)
     {
         posX = 170;
         posY = posY+90;
     }
-
 }
 
 
@@ -162,7 +163,7 @@ void MainWindow::nuevaCarpeta()
 {
     QString x = QInputDialog::getText(this,"Nueva Carpeta","Ingrese el Nombre de la Carpeta:");
     string x_1 = x.toStdString();
-    x_1 = api->Duplicados(x_1,2);
+    //x_1 = api->Duplicados(x_1,2);
     char * nombre = (char *)malloc(x.length());
     strcpy( nombre, x_1.c_str() );
 
@@ -179,7 +180,7 @@ void MainWindow::nuevoArchivo()
 {
     QString x = QInputDialog::getText(this,"Nuevo Archivo de Texto","Ingrese el Nombre del Archivo:");
     string x_1 = x.toStdString();
-    x_1 = api->Duplicados(x_1,1);
+    //x_1 = api->Duplicados(x_1,1);
     char * nombre = (char *)malloc(x.length());
     strcpy( nombre, x_1.c_str() );
     if(x != ""){
@@ -198,59 +199,6 @@ void MainWindow::nuevoArchivo()
     }
 }
 
-void MainWindow::eventoArchivos()
-{
-    QMessageBox msgBoxArchivos;
-    msgBoxArchivos.setWindowTitle("File System Utils");
-    msgBoxArchivos.setText(tr("Que desea hacer?"));
-
-    QAbstractButton * pButtonAbrir = msgBoxArchivos.addButton(tr("Leer"), QMessageBox::YesRole);
-    QPixmap pixmap(":/oYPS__file_document_enlarge_magnifier_magnify_examine_read_paper_page_text-512.png");
-    QIcon buttonicon(pixmap);
-    pButtonAbrir->setIcon(buttonicon);
-
-    QAbstractButton * pButtonCancelar = msgBoxArchivos.addButton(tr("Cancelar"), QMessageBox::NoRole);
-    QPixmap pixmap2(":/Cancel_Icon-128.png");
-    QIcon buttonicon2(pixmap2);
-    pButtonCancelar->setIcon(buttonicon2);
-
-    msgBoxArchivos.exec();
-
-    if(msgBoxArchivos.clickedButton()==pButtonAbrir){
-        leer_archivo();
-        msgBoxArchivos.close();
-    }
-
-    else
-        msgBoxArchivos.close();
-}
-
-void MainWindow::eventoCarpetas()
-{
-    QMessageBox msgBoxCarpetas;
-    msgBoxCarpetas.setWindowTitle("File System Utils");
-    msgBoxCarpetas.setText(tr("Que desea hacer?"));
-
-    QAbstractButton * pButtonAbrir = msgBoxCarpetas.addButton(tr("Abrir"), QMessageBox::YesRole);
-    QPixmap pixmap(":/oYPS__file_document_enlarge_magnifier_magnify_examine_read_paper_page_text-512.png");
-    QIcon buttonicon(pixmap);
-    pButtonAbrir->setIcon(buttonicon);
-
-    QAbstractButton * pButtonCancelar = msgBoxCarpetas.addButton(tr("Cancelar"), QMessageBox::NoRole);
-    QPixmap pixmap2(":/Cancel_Icon-128.png");
-    QIcon buttonicon2(pixmap2);
-    pButtonCancelar->setIcon(buttonicon2);
-
-    msgBoxCarpetas.exec();
-
-    if(msgBoxCarpetas.clickedButton()==pButtonAbrir){
-        abrir_archivo();
-        msgBoxCarpetas.close();
-    }
-
-    else
-        msgBoxCarpetas.close();
-}
 
 void MainWindow::on_btnAtras_clicked()
 {
@@ -300,25 +248,16 @@ void MainWindow::refrescar()
     posY = 80;
     ui->lblRuta->setText(folderActual->nombre);
 
-    for(int x = 0; x<folders.size();x++){
+    for(int x = 0; x<folders.size();x++)
         insertarCarpeta(folders.at(x)->nombre);
-        /*string n;
-        n.assign(folders.at(x)->nombre,strlen(folders.at(x)->nombre));
-        AddRoot(actual,QString::fromStdString(n));*/
-    }
+
     for(int x = 0; x<archivos.size();x++)
-    {
-        insertarArchivo(archivos.at(x)->nombre);
-        /*string n;
-        n.assign(archivos.at(x)->nombre,strlen(archivos.at(x)->nombre));
-        AddRoot(actual,QString::fromStdString(n));*/
-    }
+        insertarArchivo(archivos.at(x)->nombre);   
 }
 
 void MainWindow::on_pushButton_clicked()
 {
      api->formatear();
-
      folderActual = api->root;
      actual = folderActual->item;
      ui->treeWidget->clear();

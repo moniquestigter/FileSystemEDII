@@ -33,7 +33,6 @@ SOURCES += main.cpp\
     masterblock.cpp \
     bloquefolder.cpp \
     idxentry.cpp \
-    lista.cpp \
     hashtable.cpp
 
 
@@ -46,7 +45,6 @@ HEADERS  += mainwindow.h \
     masterblock.h \
     bloquefolder.h \
     idxentry.h \
-    lista.h \
     hashtable.h
 
 

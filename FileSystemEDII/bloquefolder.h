@@ -19,7 +19,7 @@ public:
     int numBloque;
     Archivo * archivo;
     FileEntry *fe;
-    HashTable * hashT;
+
     vector<FileEntry*> listaEntries;
 
     void setFileEntry(char* n, int fB, int lB, bool isF, int s);
@@ -34,7 +34,7 @@ public:
     void setCantArchivos(BloqueFolder * actual);
     vector<BloqueArchivo*> listaBloqueArchivo;
     vector<BloqueFolder*> listaBloqueFolder;
-    void setNumBloquesEnIdx(int cant);
+
     QTreeWidgetItem * item;
 
 };

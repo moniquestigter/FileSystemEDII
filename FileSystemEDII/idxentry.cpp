@@ -24,10 +24,6 @@ void IdxEntry::setNumEntry(int numE){
     numEntry = numE;
 }
 
-void IdxEntry::setCantIdxEntries(int cant){
-    cantIdxEntries = cant;
-}
-
 char * IdxEntry::getNombre(){
     return nombre;
 }
@@ -43,4 +39,3 @@ int IdxEntry::getNumEntry(){
 int IdxEntry::getCantIdxEntries(){
     return cantIdxEntries;
 }
-

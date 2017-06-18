@@ -11,7 +11,7 @@
 class BloqueArchivo{
 public:
     BloqueArchivo(char * nombre, int numB, int tamB,Archivo * archivo);
-    void setFileEntry(char* n, int fB, int lB, bool isF, int s); 
+    void setFileEntry(char* n, int fB, int lB, bool isF, int s);
     char * leer();
     FileEntry *fe;
     int tamanoBloque;

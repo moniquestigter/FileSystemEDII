@@ -28,16 +28,12 @@ public:
     void setTodoFileEntry(char * nom, int first,int last, bool iF, size_t size);
     void setIdxInfo(char * nom);
 
-    void imprimirEntry();
 
     char* nombre;
     int firstBlock;
     int lastBlock;
     bool isFolder;
     int size;
-    int code;
-    FileEntry * sig;
-
 };
 
 

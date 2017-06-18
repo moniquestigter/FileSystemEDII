@@ -8,8 +8,11 @@ MasterBlock::MasterBlock(Archivo * archivo,const int tam, int cantB, int first,i
     sigDisponible = sigDisp;
 }
 
-void MasterBlock::cargar(){
+MasterBlock * MasterBlock::cargar()
+{
 
+    char * mbChar = archivo->leer(0,16);
+    return charToMasterBlock(mbChar);
 }
 
 void MasterBlock::guardar()
@@ -28,8 +31,9 @@ void MasterBlock::guardar()
 
 }
 
-MasterBlock * MasterBlock::charToMasterBlock(char * c){
-    int tamB,cantB,first,sigDis = 0;
+MasterBlock * MasterBlock::charToMasterBlock(char * c)
+{
+    int tamB,cantB,first,sigDis;
     int pos = 0;
     memcpy(&tamB, &c[pos], 4);
     pos+=4;
@@ -39,7 +43,10 @@ MasterBlock * MasterBlock::charToMasterBlock(char * c){
     pos+=4;
     memcpy(&sigDis, &c[pos], 4);
     pos+=4;
-    return new MasterBlock(archivo,tamB,cantB,first,sigDis);
+
+    MasterBlock * newMB = new MasterBlock(archivo,tamB,cantB,first,sigDis);
+
+    return newMB;
 }
 
 char * MasterBlock::masterBlockToChar(){

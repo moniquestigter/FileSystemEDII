@@ -33,8 +33,6 @@ private slots:
     void abrir_archivo();
     void leer_archivo();
     void refrescar();
-    void eventoArchivos();
-    void eventoCarpetas();
     char * obtenerNodo();
 
     void agregarLabel(char * nombre);

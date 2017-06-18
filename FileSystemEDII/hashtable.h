@@ -1,29 +1,26 @@
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
-
-
-#include <QHash>
+#include <stdio.h>
+#include "Archivo.h"
+#include "IdxEntry.h"
 #include "FileEntry.h"
-#include "idxentry.h"
-
+#include <vector>
+#include <map>
+using namespace std;
 class HashTable
 {
 public:
-    HashTable();
-    QHash<char *, IdxEntry> hashTable;
-
+    HashTable(Archivo * arch);
+    map<char *, IdxEntry> hashTable;
     IdxEntry * ie;
-
-    /*void setIdxEntry(char *n, int nB, int nE);
-    void agregarIdxEntry(IdxEntry * ie);
-    void addToTable(FileEntry * fe);
-    void buscar(FileEntry * fe);
-
-    vector<IdxEntry*> idxListaEntries;
-    vector<IdxEntry*> getListaIdxEntries();
-
-
-    IdxEntry * buscar();*/
+    IdxEntry *  hash(char * nombre);
+    void imprimirNombre();
+    char * nomHash;
+    void setNombre(char * nom);
+    char * getNombre();
+    void agregarIdxEntry(char * nom,int numB, int numE);
+    Archivo * archivo;
+    int cantArchivos = 0;
 };
 
 #endif // HASHTABLE_H

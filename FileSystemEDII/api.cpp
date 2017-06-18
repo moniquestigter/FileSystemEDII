@@ -5,19 +5,36 @@
 
 API::API()
 {
-    rootSize = 0;
+    cantIdx = 0;
+
 }
 
-void API::formatear()
+//Funciones para cargar too desde el .txt
+BloqueArchivo *  API::initArchivoFromChar(char * nombre, BloqueFolder * actual,int nB,int tB,int lB)
 {
-    FILE * file = fopen("DiscoVirtual.txt","w");
-    fseek(file,4096*256,SEEK_SET);
-    fputc('\0',file);
-    fclose(file);
-    dv->listaBloqueArchivo.clear();
-    dv->listaBloqueFolder.clear();
-    nombres.clear();
-    crearDiscoVirtual();
+    actual->setCantArchivos(actual);
+    Archivo * archivo = dv->getArchivo();
+    archivo->abrir();
+    BloqueArchivo * ba = new BloqueArchivo(nombre,nB,tB,dv->getArchivo());
+    ba->setFileEntry(nombre,nB,lB,false,tB);
+    actual->agregarFileEntry(ba->fe);
+    actual->listaBloqueArchivo.push_back(ba);
+    dv->listaBloqueArchivo.push_back(ba);
+    nombres.push_back(nombre);
+    return ba;
+}
+
+BloqueFolder * API::initFolderFromChar(char * nombre, BloqueFolder * actual,int nB,int tB,int lB)
+{
+    actual->setCantArchivos(actual);
+    Archivo * archivo = dv->getArchivo();
+    BloqueFolder * bf = new BloqueFolder(nombre,nB,tB,archivo);
+    bf->setFileEntry(nombre,nB,lB,true,tB);
+    actual->agregarFileEntry(bf->fe);
+    actual->listaBloqueFolder.push_back(bf);
+    dv->listaBloqueFolder.push_back(bf);
+    nombres.push_back(nombre);
+    return bf;
 }
 
 int API::initFromChar(BloqueFolder * actual){
@@ -27,7 +44,6 @@ int API::initFromChar(BloqueFolder * actual){
     int pos1 = actual->fe->getFirstBLock()*4096;
     int lon = (actual->fe->getLastBlock() - actual->fe->getFirstBLock()+1)*4096;
     char * data = arch->leer(pos1,lon);
-
 
     int pos = 0;
     int cant;
@@ -58,75 +74,35 @@ int API::initFromChar(BloqueFolder * actual){
 
         if(esFolder == true)
         {
-            BloqueFolder * bf = crearFolder(nombre2,actual);
-            return initFromChar(bf);
+            BloqueFolder * bf = initFolderFromChar(nombre2,actual,firstBlock,size,lastBlock);
+
+            if(lastBlock > dv->mb->getSigDisponible())
+                dv->mb->setSiguienteDisponible(lastBlock+1);
+
+            initFromChar(bf);
         }
-        else
+        else if(esFolder == false)
         {
-            char * d = arch->leer(firstBlock*4096,size);
-            crearArchivo(nombre2,actual,d);
+            initArchivoFromChar(nombre2,actual,firstBlock,size,lastBlock);
         }
     }
-    return cant;
+    return 0;
 }
 
-char * API::leerArchivo(char * nombre,BloqueFolder * actual)
-{
-    char * contenido = {""};
-    for(int x = 0;x < actual->listaBloqueArchivo.size();x++)
-    {
-        char * n = actual->listaBloqueArchivo.at(x)->nombre;
 
-        if(strcmp(n,nombre)==0)
-        {
-            contenido = actual->listaBloqueArchivo.at(x)->leer();
-            return contenido;
-        }
-    }
-    return contenido;
-}
-
-BloqueFolder * API::abrirFolder(char * nombre,BloqueFolder * actual)
-{
-    for(int x = 0;x < actual->listaBloqueFolder.size();x++)
-    {
-        char * n = actual->listaBloqueFolder.at(x)->nombre;
-
-        if(strcmp(n,nombre)==0)
-        {
-            dv->setFolderActual(actual->listaBloqueFolder.at(x));
-            return actual->listaBloqueFolder.at(x);
-        }
-    }
-    return NULL;
-}
-
-void API::crearDiscoVirtual()
-{
-    char * c = {"DiscoVirtual.txt"};
-    Archivo * archivo = new Archivo(c,1048576);
-    dv = new DiscoVirtual(archivo,1048576,4096);
-    dv->formatear();
-    addRoot();
-    dv->setFolderActual(root);
-
-}
+//Crear Archivo o Folder
 
 void API::addRoot(){
-    int pos = 1;
     char * ra = {"Raiz"};
     BloqueFolder * bloque = new BloqueFolder(ra,1,0,dv->getArchivo());
-    dv->getMasterBlock()->setSiguienteDisponible(pos+3);
     bloque->setFileEntry(ra,1,3,true,0);
     this->root = bloque;
     root->listaBloqueArchivo.clear();
     root->listaBloqueFolder.clear();
-
 }
 
 BloqueArchivo * API::crearArchivo(char * nombre, BloqueFolder * actual, char * contenido)
 {
-    actual->setCantArchivos(actual);
     Archivo * archivo = dv->getArchivo();
     archivo->abrir();
     int pos = dv->getMasterBlock()->getSigDisponible();
@@ -137,10 +113,7 @@ BloqueArchivo * API::crearArchivo(char * nombre, BloqueFolder * actual, char * c
     if(size<1)
     {
         dv->getMasterBlock()->setSiguienteDisponible(pos+1);
-        archivo->escribir(contenido,pos*4096,strlen(contenido));
         ba->setFileEntry(nombre,pos,pos,false,strlen(contenido));
-        actual->agregarFileEntry(ba->fe);
-
     }
 
     else if(size>=1)
@@ -148,10 +121,17 @@ BloqueArchivo * API::crearArchivo(char * nombre, BloqueFolder * actual, char * c
         if(strlen(contenido)%4096>0)
             size++;
         dv->getMasterBlock()->setSiguienteDisponible(pos+size);
-        archivo->escribir(contenido,pos*4096,strlen(contenido));
         ba->setFileEntry(nombre,pos,pos+size,false,strlen(contenido));
-        actual->agregarFileEntry(ba->fe);
     }
+
+    actual->setCantArchivos(actual);
+    archivo->escribir(contenido,pos*4096,strlen(contenido));
+    actual->agregarFileEntry(ba->fe);
+
+    dv->getHashTable()->agregarIdxEntry(nombre, ba->numBloque,dv->getHashTable()->ie->getNumEntry());
+    IdxEntry * idx = dv->getHashTable()->hash(nombre);
+    setCantIdxArchivos();
+    escribirIdxEntries(idx);
 
     escribirEntries(ba->fe,actual);
     actual->listaBloqueArchivo.push_back(ba);
@@ -172,37 +152,17 @@ BloqueFolder * API::crearFolder(char * nombre,BloqueFolder * actual)
     bf->setFileEntry(nombre,pos,pos,true,0);
     actual->agregarFileEntry(bf->fe);
     escribirEntries(bf->fe,actual);
+
+    dv->getHashTable()->agregarIdxEntry(nombre, bf->numBloque,dv->getHashTable()->ie->getNumEntry());
+    IdxEntry * idx = dv->getHashTable()->hash(nombre);
+    setCantIdxArchivos();
+    escribirIdxEntries(idx);
+
     actual->listaBloqueFolder.push_back(bf);
     dv->listaBloqueFolder.push_back(bf);
 
     nombres.push_back(nombre);
     return bf;
-}
-
-void API::escribirEntries(FileEntry *fe,BloqueFolder * actual)
-{
-
-    char * data = new char[48];
-    int firstBlock = fe->getFirstBLock();
-    int lastBlock = fe->getLastBlock();
-    int size = fe->getSize();
-    int esFolder = fe->getEsFolder();
-    int pos = 0;
-
-    memcpy(&data[pos], fe->getNombre(), 32);
-    pos+=35;
-    memcpy(&data[pos], &firstBlock,4);
-    pos+=4;
-    memcpy(&data[pos], &lastBlock, 4);
-    pos+=4;
-    memcpy(&data[pos], &esFolder, sizeof(bool));
-    pos+=1;
-    memcpy(&data[pos], &size, 4);
-    pos+=4;
-
-    dv->getArchivo()->abrir();
-    int x = actual->listaEntries.size();
-    dv->getArchivo()->escribir(data,4096*actual->fe->getFirstBLock()+x*48-48+4,48);
 }
 
 string API::duplicadosAux(string nombre, int cant,int tamanoPalabra,int tipo)
@@ -237,4 +197,121 @@ string API::toLowerCase(string palabra)
         palabraNueva = palabraNueva+tolower(palabra[i],loc);
     return palabraNueva;
 }
+
+
+//Manipular Archivos
+char * API::leerArchivo(char * nombre,BloqueFolder * actual)
+{
+    char * contenido = {""};
+    for(int x = 0;x < actual->listaBloqueArchivo.size();x++)
+    {
+        char * n = actual->listaBloqueArchivo.at(x)->nombre;
+
+        if(strcmp(n,nombre)==0)
+        {
+            contenido = actual->listaBloqueArchivo.at(x)->leer();
+            return contenido;
+        }
+    }
+    return contenido;
+}
+
+BloqueFolder * API::abrirFolder(char * nombre,BloqueFolder * actual)
+{
+    for(int x = 0;x < actual->listaBloqueFolder.size();x++)
+    {
+        char * n = actual->listaBloqueFolder.at(x)->nombre;
+
+        if(strcmp(n,nombre)==0)
+        {
+            dv->setFolderActual(actual->listaBloqueFolder.at(x));
+            return actual->listaBloqueFolder.at(x);
+        }
+    }
+    return NULL;
+}
+
+
+//Crear Disco
+void API::crearDiscoVirtual()
+{
+    char * c = {"DiscoVirtual.txt"};
+    Archivo * archivo = new Archivo(c,1048576);
+    dv = new DiscoVirtual(archivo,1048576,4096);
+    dv->cargar();
+    addRoot();
+    dv->setFolderActual(root);
+    dv->mb->setSiguienteDisponible(7);
+
+}
+
+void API::formatear()
+{
+    FILE * file = fopen("DiscoVirtual.txt","w");
+    fseek(file,4096*256,SEEK_SET);
+    fputc('\0',file);
+    fclose(file);
+    dv->listaBloqueArchivo.clear();
+    dv->listaBloqueFolder.clear();
+    nombres.clear();
+    dv->formatear();
+    addRoot();
+    dv->setFolderActual(root);
+}
+
+
+//Entries y idxEntries
+void API::escribirEntries(FileEntry *fe,BloqueFolder * actual)
+{
+    char * data = new char[48];
+    int firstBlock = fe->getFirstBLock();
+    int lastBlock = fe->getLastBlock();
+    int size = fe->getSize();
+    int esFolder = fe->getEsFolder();
+    int pos = 0;
+
+    memcpy(&data[pos], fe->getNombre(), 32);
+    pos+=35;
+    memcpy(&data[pos], &firstBlock,4);
+    pos+=4;
+    memcpy(&data[pos], &lastBlock, 4);
+    pos+=4;
+    memcpy(&data[pos], &esFolder, sizeof(bool));
+    pos+=1;
+    memcpy(&data[pos], &size, 4);
+    pos+=4;
+
+    dv->getArchivo()->abrir();
+    int x = actual->listaEntries.size();
+    dv->getArchivo()->escribir(data,(4096*actual->fe->getFirstBLock())+(x*48)-48+4,48);
+}
+
+void API::setCantIdxArchivos()
+{
+    cantIdx++;
+    char * nombre = {"DiscoVirtual.txt"};
+    Archivo * arch = new Archivo(nombre,256*4096);
+    char * cant = new char[4];
+    memcpy(&cant[0], &cantIdx , 4);
+    arch->escribir(cant,(4096*4),4);
+}
+
+void API::escribirIdxEntries(IdxEntry * ie){
+    char * data = new char[43];
+    int numBlock = ie->getNumEntry();
+    int numEnt = ie->getNumEntry();
+
+    int pos = 0;
+    memcpy(&data[pos], ie->getNombre(), 35);
+    pos+=35;
+    memcpy(&data[pos], &numBlock, 4);
+    pos+=4;
+    memcpy(&data[pos], &numEnt, 4);
+    pos+=4;
+
+    dv->getArchivo()->abrir();
+    int x = dv->getHashTable()->hashTable.size();
+    dv->getArchivo()->escribir(data,(4096*4)+(x*43)+4,43);
+}
+
 

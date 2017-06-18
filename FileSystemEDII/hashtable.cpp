@@ -1,38 +1,17 @@
 #include "hashtable.h"
 
-HashTable::HashTable()
+HashTable::HashTable(Archivo * arch)
 {
     ie = new IdxEntry();
+    archivo = arch;
 }
 
-/*void HashTable::setIdxEntry(char *n, int nB, int nE){
-    ie->setTodo(n,nB,nE);
+IdxEntry * HashTable::hash(char * nombre){
+    return &hashTable.at(nombre);
 }
 
-void HashTable::addToTable(IdxEntry * id){
-    hashTable.insert(id->getNombre(),id);
+void HashTable::agregarIdxEntry(char * nom,int numB, int numE){
+    ie->setTodo(nom, numB, numE);
+    hashTable.insert(std::pair<char * ,IdxEntry>(nom,*ie));
 }
-
-IdxEntry * HashTable::agregarIdxEntry(FileEntry * fe){
-    ie->setTodo(fe->getNombre(),hash(fe->getNombre()),fe->code);
-    return ie;
-}
-
-int HashTable::hash(char * nombre){
-    IdxEntry * idx = hashTable.value(nombre);
-    return idx->getNumBloque();
-}
-
-void HashTable::buscar(BloqueFolder * bf, char * nom){
-    FileEntry * fiE;
-    vector<FileEntry*> lista = bf->getListaEntries();
-    for(int a = 0; a<lista.size(); a++){
-        if(lista.at(a)->getNombre() == nom){
-            fiE = lista.at(a);
-        }
-    }
-    int numB = hash(fiE->getNombre());
-
-}
-*/
 

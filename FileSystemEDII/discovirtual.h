@@ -19,7 +19,6 @@ public:
     BloqueFolder * folderActual;
     Archivo * getArchivo();
     MasterBlock * getMasterBlock();
-    vector<HashTable*> listaHashTables;
 
     int tamArchivo,tamBloque;
     Archivo * archivo;
@@ -31,6 +30,11 @@ public:
     BloqueFolder * raiz;
     vector<BloqueArchivo*> listaBloqueArchivo;
     vector<BloqueFolder*> listaBloqueFolder;
+
+    HashTable * getHashTable();
+    vector<HashTable*> listaHashTables;
+    HashTable * hashTable;
+    int numEntry;
 
 private:
 

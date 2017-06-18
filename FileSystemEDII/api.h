@@ -7,7 +7,7 @@
 #include "Archivo.h"
 #include "BloqueFolder.h"
 #include "DiscoVirtual.h"
-#include "lista.h"
+
 #include <idxentry.h>
 #include <QHash>
 
@@ -22,20 +22,28 @@ public:
 
     BloqueArchivo * crearArchivo(char * nombre, BloqueFolder * actual, char * contenido);
     BloqueFolder * crearFolder(char * nombre,BloqueFolder * actual);
-    void formatear();
+    BloqueArchivo * initArchivoFromChar(char * nombre, BloqueFolder * actual,int nB,int tB,int lB);
+    BloqueFolder * initFolderFromChar(char * nombre, BloqueFolder * actual,int nB,int tB,int lB);
+
     void escribirEntries(FileEntry *fe,BloqueFolder * actual);
-    void addRoot();
+
     BloqueFolder * root;
     DiscoVirtual * dv;
+    void formatear();
+    void addRoot();
+
     BloqueFolder * abrirFolder(char * n,BloqueFolder * actual);
     char * leerArchivo(char * n,BloqueFolder * actual);
     int initFromChar(BloqueFolder * actual);
+
     string Duplicados(string nombre,int tipo);
     vector<char *> nombres;
 
-    int rootSize;
+    void setCantIdxArchivos();
+    void escribirIdxEntries(IdxEntry * ie);
 
 private:
+    int cantIdx;
     string duplicadosAux(string nombre, int cant,int tamanoPalabra,int tipo);
     string toLowerCase(string palabra);
 };

@@ -3,6 +3,7 @@
 DiscoVirtual::DiscoVirtual(Archivo * arch,int tamArc,int tamBlo){
     archivo = arch;
     tamArchivo = tamArc;
+
     tamBloque = tamBlo;
 }
 
@@ -18,21 +19,21 @@ void DiscoVirtual::setFolderActual(BloqueFolder * bf)
 
 void DiscoVirtual::formatear()
 {
-
     mb = new MasterBlock(archivo,tamBloque,(tamArchivo/tamBloque),-1,1);
     mb->guardar();
-
-
-    mb->setSiguienteDisponible(1);
+    hashTable = new HashTable(archivo);
+    mb->setSiguienteDisponible(7);
     char * mB = mb->masterBlockToChar();
     archivo->escribir(mB,1,strlen(mB));
-
 }
 
-void DiscoVirtual::cargar(){
+void DiscoVirtual::cargar()
+{
+    this->hashTable = new HashTable(archivo);
     archivo->abrir();
     mb = new MasterBlock(archivo,tamBloque,(tamArchivo/tamBloque),0,1);
-    this->mb->cargar();
+    mb = mb->cargar();
+    mb->setSiguienteDisponible(7);
 }
 
 BloqueFolder * DiscoVirtual::getRaiz()
@@ -65,5 +66,9 @@ MasterBlock * DiscoVirtual::getMasterBlock()
     return mb;
 }
 
+HashTable * DiscoVirtual::getHashTable()
+{
+    return hashTable;
+}
 
 
