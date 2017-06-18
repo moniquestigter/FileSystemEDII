@@ -25,6 +25,7 @@ public:
     BloqueArchivo * initArchivoFromChar(char * nombre, BloqueFolder * actual,int nB,int tB,int lB);
     BloqueFolder * initFolderFromChar(char * nombre, BloqueFolder * actual,int nB,int tB,int lB);
 
+    
     void escribirEntries(FileEntry *fe,BloqueFolder * actual);
 
     BloqueFolder * root;
@@ -35,7 +36,8 @@ public:
     BloqueFolder * abrirFolder(char * n,BloqueFolder * actual);
     char * leerArchivo(char * n,BloqueFolder * actual);
     int initFromChar(BloqueFolder * actual);
-
+    void initIDX();
+    
     string Duplicados(string nombre,int tipo);
     vector<char *> nombres;
 
@@ -46,6 +48,7 @@ private:
     int cantIdx;
     string duplicadosAux(string nombre, int cant,int tamanoPalabra,int tipo);
     string toLowerCase(string palabra);
+
 };
 
 #endif // API_H

@@ -89,6 +89,13 @@ int API::initFromChar(BloqueFolder * actual){
     return 0;
 }
 
+void API::initIDX()
+{
+    char * nombre = {"DiscoVirtual.txt"};
+    Archivo * arch = new Archivo(nombre,256*4096);
+    char * data = arch->leer(4096*4,4096*3);
+
+}
 
 //Crear Archivo o Folder
 
