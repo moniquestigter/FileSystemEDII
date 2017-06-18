@@ -2,7 +2,6 @@
 
 #include <qmessagebox.h>
 
-
 API::API()
 {
     cantIdx = 0;
@@ -87,14 +86,6 @@ int API::initFromChar(BloqueFolder * actual){
         }
     }
     return 0;
-}
-
-void API::initIDX()
-{
-    char * nombre = {"DiscoVirtual.txt"};
-    Archivo * arch = new Archivo(nombre,256*4096);
-    char * data = arch->leer(4096*4,4096*3);
-
 }
 
 //Crear Archivo o Folder
@@ -207,19 +198,16 @@ string API::toLowerCase(string palabra)
 
 
 //Manipular Archivos
-char * API::leerArchivo(char * nombre,BloqueFolder * actual)
-{
-    char * contenido = {""};
-    for(int x = 0;x < actual->listaBloqueArchivo.size();x++)
-    {
-        char * n = actual->listaBloqueArchivo.at(x)->nombre;
+char * API::leerArchivo(char * nombre,BloqueFolder * actual){
 
-        if(strcmp(n,nombre)==0)
-        {
-            contenido = actual->listaBloqueArchivo.at(x)->leer();
-            return contenido;
-        }
-    }
+    char * contenido = {""};
+    IdxEntry * idx = dv->getHashTable()->hash(nombre);
+    int tamano = idx->getCantIdxEntries();
+    int numBloque = idx->getNumBloque();
+
+    char * nombre2 = {"DiscoVirtual.txt"};
+    Archivo * arch = new Archivo(nombre2,256*4096);
+    contenido = arch->leer(numBloque*4096,tamano);
     return contenido;
 }
 
@@ -320,5 +308,28 @@ void API::escribirIdxEntries(IdxEntry * ie){
     int x = dv->getHashTable()->hashTable.size();
     dv->getArchivo()->escribir(data,(4096*4)+(x*43)+4,43);
 }
+
+void API::initIDX(){
+    char * nombre = {"DiscoVirtual.txt"};
+    Archivo * arch = new Archivo(nombre,256*4096);
+    char * data = arch->leer(4096*4,4096*3);
+
+    int pos = 0;
+    char * nom = new char[35];
+    memcpy(&nom, &data[pos], 35);
+    pos+=35;
+
+    int nB;
+    memcpy(&nB, &data[pos], 4);
+    pos+=4;
+
+    int nE;
+    memcpy(&nE, &data[pos], 4);
+    pos+=4;
+
+    dv->getHashTable()->agregarIdxEntry(nom, nB, nE);
+
+}
+
 
 

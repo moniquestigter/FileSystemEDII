@@ -2,14 +2,12 @@
 #define API_H
 
 #include <stdio.h>
-#include <string.h>
+#include <string>
 #include "MasterBlock.h"
 #include "Archivo.h"
 #include "BloqueFolder.h"
 #include "DiscoVirtual.h"
-
-#include <idxentry.h>
-#include <QHash>
+#include <vector>
 
 using namespace std;
 
@@ -25,7 +23,7 @@ public:
     BloqueArchivo * initArchivoFromChar(char * nombre, BloqueFolder * actual,int nB,int tB,int lB);
     BloqueFolder * initFolderFromChar(char * nombre, BloqueFolder * actual,int nB,int tB,int lB);
 
-    
+
     void escribirEntries(FileEntry *fe,BloqueFolder * actual);
 
     BloqueFolder * root;
@@ -37,7 +35,7 @@ public:
     char * leerArchivo(char * n,BloqueFolder * actual);
     int initFromChar(BloqueFolder * actual);
     void initIDX();
-    
+
     string Duplicados(string nombre,int tipo);
     vector<char *> nombres;
 
