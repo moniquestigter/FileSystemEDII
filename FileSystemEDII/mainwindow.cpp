@@ -106,7 +106,7 @@ void MainWindow::leer_archivo()
         QMessageBox msgBox;
         std::string str = std::string(contenido);
         QString qstr = QString::fromStdString(str);
-        //QString q = "Hola";
+        QString q = "Hola";
         msgBox.setText(qstr);
         msgBox.exec();
 
