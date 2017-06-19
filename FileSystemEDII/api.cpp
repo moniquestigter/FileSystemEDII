@@ -199,22 +199,15 @@ string API::toLowerCase(string palabra)
 
 
 //Manipular Archivos
-char * API::leerArchivo(char * nombre,BloqueFolder * actual)
+char * API::leerArchivoh(char * nombre,BloqueFolder * actual)
 {
     char * nombre2 = {"DiscoVirtual.txt"};
-    cout<<"1"<<endl;
     Archivo * arch = new Archivo(nombre2,256*4096);
-    cout<<"2"<<endl;
     char * contenido = {""};
-    cout<<"3"<<endl;
     IdxEntry * idx = dv->getHashTable()->hash(nombre);
-    cout<<"4"<<endl;
-    int tamano = 256;
-    cout<<"5"<<endl;
-    int numBloque = 4;
-    cout<<"6"<<endl;
+    int tamano = idx->getSizeBloque();
+    int numBloque = idx->getNumBloque();
     contenido = arch->leer(numBloque*4096,tamano);
-    cout<<"7"<<endl;
     return contenido;
 }
 
@@ -355,4 +348,18 @@ void API::initIDX(){
     cantIdx = cant;
 }
 
+char * API::leerArchivo(char *nombre, BloqueFolder *actual){
+    char * contenido = {""};
+    for(int x = 0;x < actual->listaBloqueArchivo.size();x++)
+        {
+            char * n = actual->listaBloqueArchivo.at(x)->nombre;
+
+            if(strcmp(n,nombre)==0)
+            {
+                contenido = actual->listaBloqueArchivo.at(x)->leer();
+                return contenido;
+            }
+        }
+        return NULL;
+}
 

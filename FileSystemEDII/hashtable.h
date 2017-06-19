@@ -6,6 +6,7 @@
 #include "FileEntry.h"
 #include <vector>
 #include <QHash>
+#include <QList>
 using namespace std;
 class HashTable
 {

@@ -7,12 +7,20 @@ HashTable::HashTable(Archivo * arch)
 }
 
 IdxEntry * HashTable::hash(char * nombre){
-    IdxEntry * idx = hashTable.value(nombre);
-    return idx;
+    foreach(IdxEntry* idx, hashTable){
+        if(idx->getNombre() == nombre)
+            return idx;
+    }
+    return NULL;
+
+    //IdxEntry * idx = hashTable.value(nombre);
+   // return idx;
 }
 
 void HashTable::agregarIdxEntry(char * nom,int numB, int numE, int size){
-    ie->setTodo(nom, numB, numE,size);
-    hashTable.insert(nom,ie);
+    IdxEntry * idx = new IdxEntry();
+    idx->setTodo(nom, numB, numE,size);
+    hashTable.insert(nom,idx);
+    cout<<hash(nom)<<endl;
 }
 

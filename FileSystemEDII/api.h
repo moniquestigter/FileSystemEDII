@@ -34,7 +34,7 @@ public:
     void addRoot();
 
     BloqueFolder * abrirFolder(char * n,BloqueFolder * actual);
-    char * leerArchivo(char * n,BloqueFolder * actual);
+    char * leerArchivoh(char * n,BloqueFolder * actual);
     int initFromChar(BloqueFolder * actual);
     void initIDX();
     
@@ -43,6 +43,7 @@ public:
 
     void setCantIdxArchivos();
     void escribirIdxEntries(IdxEntry * ie);
+    char * leerArchivo(char * n,BloqueFolder * actual);
 
 private:
     int cantIdx;

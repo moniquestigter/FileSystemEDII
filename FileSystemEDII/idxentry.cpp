@@ -10,7 +10,6 @@ void IdxEntry::setTodo(char * nom,int nB, int nE, int s){
     numBloque = nB;
     numEntry = nE;
     size = s;
-    cantIdxEntries++;
 }
 
 void IdxEntry::setNombre(char * nom){
