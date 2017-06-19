@@ -101,7 +101,7 @@ void MainWindow::abrir_archivo()
 
 void MainWindow::leer_archivo()
 {
-
+        //char * contenido = {"Hola"};
         char * contenido = api->leerArchivo(obtenerNodo(),folderActual);
         QMessageBox msgBox;
         std::string str = std::string(contenido);
