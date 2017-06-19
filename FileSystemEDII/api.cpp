@@ -317,7 +317,7 @@ void API::escribirIdxEntries(IdxEntry * ie){
 
     dv->getArchivo()->abrir();
     int x = dv->getHashTable()->hashTable.size();
-    dv->getArchivo()->escribir(data,(4096*4)+(x*43)+4,43);
+    dv->getArchivo()->escribir(data,(4096*4)+(x*47)+4,47);
 }
 
 void API::initIDX(){
