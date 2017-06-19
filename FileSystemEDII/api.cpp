@@ -126,6 +126,7 @@ BloqueArchivo * API::crearArchivo(char * nombre, BloqueFolder * actual, char * c
     archivo->escribir(contenido,pos*4096,strlen(contenido));
     actual->agregarFileEntry(ba->fe);
 
+    dv->getHashTable()->agregarIdxEntry(nombre, ba->numBloque,dv->getHashTable()->ie->getNumEntry());
     IdxEntry * idx = dv->getHashTable()->hash(nombre);
     setCantIdxArchivos();
     escribirIdxEntries(idx);
@@ -150,6 +151,7 @@ BloqueFolder * API::crearFolder(char * nombre,BloqueFolder * actual)
     actual->agregarFileEntry(bf->fe);
     escribirEntries(bf->fe,actual);
 
+    dv->getHashTable()->agregarIdxEntry(nombre, bf->numBloque,dv->getHashTable()->ie->getNumEntry());
     IdxEntry * idx = dv->getHashTable()->hash(nombre);
     setCantIdxArchivos();
     escribirIdxEntries(idx);
@@ -200,7 +202,7 @@ char * API::leerArchivo(char * nombre,BloqueFolder * actual){
 
     char * contenido = {""};
     IdxEntry * idx = dv->getHashTable()->hash(nombre);
-    int tamano = idx->getSizeBloque();
+    int tamano = idx->getCantIdxEntries();
     int numBloque = idx->getNumBloque();
 
     char * nombre2 = {"DiscoVirtual.txt"};
@@ -290,10 +292,9 @@ void API::setCantIdxArchivos()
 }
 
 void API::escribirIdxEntries(IdxEntry * ie){
-    char * data = new char[47];
+    char * data = new char[43];
     int numBlock = ie->getNumEntry();
     int numEnt = ie->getNumEntry();
-    int sizeB = ie->getSizeBloque();
 
     int pos = 0;
     memcpy(&data[pos], ie->getNombre(), 35);
@@ -302,18 +303,16 @@ void API::escribirIdxEntries(IdxEntry * ie){
     pos+=4;
     memcpy(&data[pos], &numEnt, 4);
     pos+=4;
-    memcpy(&data[pos],&ie,4);
-    pos+=4;
 
     dv->getArchivo()->abrir();
     int x = dv->getHashTable()->hashTable.size();
-    dv->getArchivo()->escribir(data,(4096*4)+(x*47)+4,47);
+    dv->getArchivo()->escribir(data,(4096*4)+(x*43)+4,43);
 }
 
 void API::initIDX(){
     char * nombre = {"DiscoVirtual.txt"};
     Archivo * arch = new Archivo(nombre,256*4096);
-    char * data = arch->leer(4096*4,4096*4);
+    char * data = arch->leer(4096*4,4096*3);
 
     int pos = 0;
     char * nom = new char[35];
@@ -328,11 +327,7 @@ void API::initIDX(){
     memcpy(&nE, &data[pos], 4);
     pos+=4;
 
-    int s;
-    memcpy(&s, &data[pos], 4);
-    pos=4;
-
-    dv->getHashTable()->agregarIdxEntry(nom, nB, nE,s);
+    dv->getHashTable()->agregarIdxEntry(nom, nB, nE);
 
 }
 

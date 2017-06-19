@@ -11,20 +11,17 @@ public:
     void setNombre(char * nom);
     void setNumBloque(int num);
     void setNumEntry(int numE);
-    void setSizeBloque(int s);
-    void setTodo(char * nom,int nB, int nE, int size);
+    void setTodo(char * nom,int nB, int nE);
 
     char * getNombre();
     int getNumBloque();
     int getNumEntry();
     int getCantIdxEntries();
-    int getSizeBloque();
 
     char * nombre;
     int numBloque;
     int numEntry;
     int cantIdxEntries;
-    int size;
 };
 
 #endif // IDXENTRY_H
