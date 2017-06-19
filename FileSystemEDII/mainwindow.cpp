@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     actual = NULL;
     api->initFromChar(folderActual);
     refrescar();
+    api->initIDX();
 }
 
 QTreeWidgetItem * MainWindow::AddRoot(QTreeWidgetItem * parent,QString nombre)

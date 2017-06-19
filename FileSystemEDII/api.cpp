@@ -318,23 +318,30 @@ void API::initIDX(){
     char * data = arch->leer(4096*4,4096*4);
 
     int pos = 0;
-    char * nom = new char[35];
-    memcpy(&nom, &data[pos], 35);
-    pos+=35;
+    int cant;
+    memcpy(&cant, &(data[pos]), 4);
+    pos += 4;
 
-    int nB;
-    memcpy(&nB, &data[pos], 4);
-    pos+=4;
+    for(int a = 0; a<cant; a++){
+        char * nom = new char[35];
+        memcpy(&nom, &data[pos], 35);
+        pos+=35;
 
-    int nE;
-    memcpy(&nE, &data[pos], 4);
-    pos+=4;
+        int nB;
+        memcpy(&nB, &data[pos], 4);
+        pos+=4;
 
-    int s;
-    memcpy(&s, &data[pos], 4);
-    pos=4;
+        int nE;
+        memcpy(&nE, &data[pos], 4);
+        pos+=4;
 
-    dv->getHashTable()->agregarIdxEntry(nom, nB, nE,s);
+        int s;
+        memcpy(&s, &data[pos], 4);
+        pos=4;
+
+        dv->getHashTable()->agregarIdxEntry(nom, nB, nE,s);
+    }
+    cantIdx = cant;
 
 }
 
