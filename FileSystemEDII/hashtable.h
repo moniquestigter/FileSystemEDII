@@ -5,13 +5,13 @@
 #include "IdxEntry.h"
 #include "FileEntry.h"
 #include <vector>
-#include <map>
+#include <QHash>
 using namespace std;
 class HashTable
 {
 public:
     HashTable(Archivo * arch);
-    map<char *, IdxEntry*> hashTable;
+    QHash<char *, IdxEntry*> hashTable;
     IdxEntry * ie;
     IdxEntry *  hash(char * nombre);
     void imprimirNombre();

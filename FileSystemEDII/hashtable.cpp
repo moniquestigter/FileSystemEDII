@@ -7,12 +7,12 @@ HashTable::HashTable(Archivo * arch)
 }
 
 IdxEntry * HashTable::hash(char * nombre){
-    IdxEntry * idx = hashTable.at(nombre);
+    IdxEntry * idx = hashTable.value(nombre);
     return idx;
 }
 
 void HashTable::agregarIdxEntry(char * nom,int numB, int numE, int size){
     ie->setTodo(nom, numB, numE,size);
-    hashTable.insert(std::pair<char * ,IdxEntry*>(nom,ie));
+    hashTable.insert(nom,ie);
 }
 

@@ -209,11 +209,11 @@ char * API::leerArchivo(char * nombre,BloqueFolder * actual)
     cout<<"3"<<endl;
     IdxEntry * idx = dv->getHashTable()->hash(nombre);
     cout<<"4"<<endl;
-    int tamano = idx->getSizeBloque();
+    int tamano = 256;
     cout<<"5"<<endl;
-    int numBloque = idx->getNumBloque();
+    int numBloque = 4;
     cout<<"6"<<endl;
-    contenido = arch->leer(numBloque*4096,256);
+    contenido = arch->leer(numBloque*4096,tamano);
     cout<<"7"<<endl;
     return contenido;
 }
