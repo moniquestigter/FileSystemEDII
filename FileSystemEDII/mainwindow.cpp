@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     folderActual = raiz;
     actual = NULL;
     api->initFromChar(folderActual);
+    api->initIDX();
     refrescar();
 }
 

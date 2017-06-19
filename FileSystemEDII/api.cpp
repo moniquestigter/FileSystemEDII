@@ -89,14 +89,6 @@ int API::initFromChar(BloqueFolder * actual){
     return 0;
 }
 
-void API::initIDX()
-{
-    char * nombre = {"DiscoVirtual.txt"};
-    Archivo * arch = new Archivo(nombre,256*4096);
-    char * data = arch->leer(4096*4,4096*3);
-
-}
-
 //Crear Archivo o Folder
 
 void API::addRoot(){
@@ -135,7 +127,7 @@ BloqueArchivo * API::crearArchivo(char * nombre, BloqueFolder * actual, char * c
     archivo->escribir(contenido,pos*4096,strlen(contenido));
     actual->agregarFileEntry(ba->fe);
 
-    dv->getHashTable()->agregarIdxEntry(nombre, ba->numBloque,dv->getHashTable()->ie->getNumEntry());
+    dv->getHashTable()->agregarIdxEntry(nombre, ba->numBloque,dv->getHashTable()->ie->getNumEntry(),strlen(contenido));
     IdxEntry * idx = dv->getHashTable()->hash(nombre);
     setCantIdxArchivos();
     escribirIdxEntries(idx);
@@ -160,7 +152,7 @@ BloqueFolder * API::crearFolder(char * nombre,BloqueFolder * actual)
     actual->agregarFileEntry(bf->fe);
     escribirEntries(bf->fe,actual);
 
-    dv->getHashTable()->agregarIdxEntry(nombre, bf->numBloque,dv->getHashTable()->ie->getNumEntry());
+    dv->getHashTable()->agregarIdxEntry(nombre, bf->numBloque,dv->getHashTable()->ie->getNumEntry(),0);
     IdxEntry * idx = dv->getHashTable()->hash(nombre);
     setCantIdxArchivos();
     escribirIdxEntries(idx);
@@ -307,6 +299,7 @@ void API::escribirIdxEntries(IdxEntry * ie){
     char * data = new char[43];
     int numBlock = ie->getNumEntry();
     int numEnt = ie->getNumEntry();
+    int size = ie->getSizeBloque();
 
     int pos = 0;
     memcpy(&data[pos], ie->getNombre(), 35);
@@ -315,10 +308,45 @@ void API::escribirIdxEntries(IdxEntry * ie){
     pos+=4;
     memcpy(&data[pos], &numEnt, 4);
     pos+=4;
+    memcpy(&data[pos], &size, 4);
+    pos+=4;
+
 
     dv->getArchivo()->abrir();
     int x = dv->getHashTable()->hashTable.size();
     dv->getArchivo()->escribir(data,(4096*4)+(x*43)+4,43);
+}
+
+void API::initIDX(){
+    char * nombre = {"DiscoVirtual.txt"};
+    Archivo * arch = new Archivo(nombre,256*4096);
+    char * data = arch->leer(4096*4,4096*4);
+
+    int pos = 0;
+    int cant;
+    memcpy(&cant, &(data[pos]), 4);
+    pos += 4;
+
+    for(int a = 0; a<cant; a++){
+        char * nom = new char[35];
+        memcpy(&nom, &data[pos], 35);
+        pos+=35;
+
+        int nB;
+        memcpy(&nB, &data[pos], 4);
+        pos+=4;
+
+        int nE;
+        memcpy(&nE, &data[pos], 4);
+        pos+=4;
+
+        int s;
+        memcpy(&s, &data[pos], 4);
+        pos=4;
+
+        dv->getHashTable()->agregarIdxEntry(nom, nB, nE,s);
+    }
+    cantIdx = cant;
 }
 
 

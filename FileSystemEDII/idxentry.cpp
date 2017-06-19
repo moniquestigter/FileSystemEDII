@@ -5,15 +5,20 @@ IdxEntry::IdxEntry()
 
 }
 
-void IdxEntry::setTodo(char * nom,int nB, int nE){
+void IdxEntry::setTodo(char * nom,int nB, int nE, int s){
     nombre = nom;
     numBloque = nB;
     numEntry = nE;
+    size = s;
     cantIdxEntries++;
 }
 
 void IdxEntry::setNombre(char * nom){
     nombre = nom;
+}
+
+void IdxEntry::setSizeBloque(int s){
+    size = s;
 }
 
 void IdxEntry::setNumBloque(int num){
@@ -38,4 +43,8 @@ int IdxEntry::getNumEntry(){
 
 int IdxEntry::getCantIdxEntries(){
     return cantIdxEntries;
+}
+
+int IdxEntry::getSizeBloque(){
+    return size;
 }

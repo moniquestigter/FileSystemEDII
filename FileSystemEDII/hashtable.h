@@ -18,7 +18,7 @@ public:
     char * nomHash;
     void setNombre(char * nom);
     char * getNombre();
-    void agregarIdxEntry(char * nom,int numB, int numE);
+    void agregarIdxEntry(char * nom,int numB, int numE, int size);
     Archivo * archivo;
     int cantArchivos = 0;
 };
