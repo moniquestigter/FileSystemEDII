@@ -126,6 +126,7 @@ BloqueArchivo * API::crearArchivo(char * nombre, BloqueFolder * actual, char * c
     archivo->escribir(contenido,pos*4096,strlen(contenido));
     actual->agregarFileEntry(ba->fe);
 
+    dv->getHashTable()->agregarIdxEntry(nombre, ba->numBloque,dv->getHashTable()->ie->getNumEntry(),strlen(contenido));
     IdxEntry * idx = dv->getHashTable()->hash(nombre);
     setCantIdxArchivos();
     escribirIdxEntries(idx);
@@ -150,6 +151,7 @@ BloqueFolder * API::crearFolder(char * nombre,BloqueFolder * actual)
     actual->agregarFileEntry(bf->fe);
     escribirEntries(bf->fe,actual);
 
+    dv->getHashTable()->agregarIdxEntry(nombre, bf->numBloque,dv->getHashTable()->ie->getNumEntry(),0);
     IdxEntry * idx = dv->getHashTable()->hash(nombre);
     setCantIdxArchivos();
     escribirIdxEntries(idx);
