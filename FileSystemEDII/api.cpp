@@ -296,7 +296,7 @@ void API::setCantIdxArchivos()
 }
 
 void API::escribirIdxEntries(IdxEntry * ie){
-    char * data = new char[43];
+    char * data = new char[47];
     int numBlock = ie->getNumEntry();
     int numEnt = ie->getNumEntry();
     int size = ie->getSizeBloque();
@@ -320,31 +320,34 @@ void API::escribirIdxEntries(IdxEntry * ie){
 void API::initIDX(){
     char * nombre = {"DiscoVirtual.txt"};
     Archivo * arch = new Archivo(nombre,256*4096);
-    char * data = arch->leer(4096*4,4096*4);
+
+    char * data = arch->leer(4096*4,4096*3);
 
     int pos = 0;
     int cant;
     memcpy(&cant, &(data[pos]), 4);
     pos += 4;
 
-    for(int a = 0; a<cant; a++){
-        char * nom = new char[35];
-        memcpy(&nom, &data[pos], 35);
-        pos+=35;
+    for(int x = 0;x<cant;x++){
 
-        int nB;
-        memcpy(&nB, &data[pos], 4);
-        pos+=4;
+        char * nombre = new char[35];
+        memcpy(nombre, &(data[pos]), 35);
+        pos += 35;
 
-        int nE;
-        memcpy(&nE, &data[pos], 4);
-        pos+=4;
+        int bloque;
+        memcpy(&bloque, &(data[pos]), 4);
+        pos += 4;
 
-        int s;
-        memcpy(&s, &data[pos], 4);
-        pos=4;
+        int numE;
+        memcpy(&numE, &(data[pos]), 4);
+        pos += 4;
 
-        dv->getHashTable()->agregarIdxEntry(nom, nB, nE,s);
+        int size;
+        memcpy(&size, &(data[pos]), 4);
+        pos += 4;
+
+        dv->getHashTable()->agregarIdxEntry(nombre, bloque,numE,size);
+
     }
     cantIdx = cant;
 }
