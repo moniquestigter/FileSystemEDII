@@ -199,7 +199,7 @@ string API::toLowerCase(string palabra)
 
 
 //Manipular Archivos
-char * API::leerArchivoh(char * nombre,BloqueFolder * actual)
+char * API::leerArchivoh(char * nombre)
 {
     char * nombre2 = {"DiscoVirtual.txt"};
     Archivo * arch = new Archivo(nombre2,256*4096);
@@ -211,19 +211,52 @@ char * API::leerArchivoh(char * nombre,BloqueFolder * actual)
     return contenido;
 }
 
-BloqueFolder * API::abrirFolder(char * nombre,BloqueFolder * actual)
-{
-    for(int x = 0;x < actual->listaBloqueFolder.size();x++)
-    {
-        char * n = actual->listaBloqueFolder.at(x)->nombre;
 
-        if(strcmp(n,nombre)==0)
-        {
-            dv->setFolderActual(actual->listaBloqueFolder.at(x));
-            return actual->listaBloqueFolder.at(x);
-        }
+BloqueFolder * API::abrirFolderh(char * nombre)
+{
+    char * nombre2 = {"DiscoVirtual.txt"};
+    Archivo * arch = new Archivo(nombre2,256*4096);
+
+    char * data;
+    IdxEntry * idx = dv->getHashTable()->hash(nombre);
+    int tamano = idx->getSizeBloque();
+    int numBloque = idx->getNumBloque();
+    data = arch->leer(numBloque*4096,tamano);
+
+    BloqueFolder * bf = new BloqueFolder(nombre,numBloque,tamano,arch);
+
+    int pos = 0;
+    int cant;
+    memcpy(&cant, &(data[pos]), 4);
+    pos += 4;
+
+    for(int x = 0;x<cant;x++){
+        char * n = new char[35];
+        memcpy(n, &(data[pos]), 35);
+        pos += 35;
+
+        int firstBlock;
+        memcpy(&firstBlock, &(data[pos]), 4);
+        pos += 4;
+
+        int lastBlock;
+        memcpy(&lastBlock, &(data[pos]), 4);
+        pos += 4;
+
+        bool esFolder;
+        memcpy(&esFolder, &(data[pos]), 1);
+        pos += 1;
+
+        int size;
+        memcpy(&size, &(data[pos]), 4);
+        pos += 4;
+
+        FileEntry * fe = new FileEntry();
+        fe->setTodoFileEntry(n,firstBlock,lastBlock,esFolder,size);
+        bf->agregarFileEntry(fe);
+
     }
-    return NULL;
+    return bf;
 }
 
 
@@ -360,6 +393,21 @@ char * API::leerArchivo(char *nombre, BloqueFolder *actual){
                 return contenido;
             }
         }
-        return NULL;
+    return NULL;
+}
+
+BloqueFolder * API::abrirFolder(char * nombre,BloqueFolder * actual)
+{
+    for(int x = 0;x < actual->listaBloqueFolder.size();x++)
+    {
+        char * n = actual->listaBloqueFolder.at(x)->nombre;
+
+        if(strcmp(n,nombre)==0)
+        {
+            dv->setFolderActual(actual->listaBloqueFolder.at(x));
+            return actual->listaBloqueFolder.at(x);
+        }
+    }
+    return NULL;
 }
 
