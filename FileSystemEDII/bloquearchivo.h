@@ -21,8 +21,6 @@ public:
     QTreeWidgetItem * item;
     void initFromChar(char * d);
 
-
-
 };
 
 #endif // BLOQUEARCHIVO_H

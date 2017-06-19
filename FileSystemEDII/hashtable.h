@@ -11,7 +11,7 @@ class HashTable
 {
 public:
     HashTable(Archivo * arch);
-    map<char *, IdxEntry> hashTable;
+    map<char *, IdxEntry*> hashTable;
     IdxEntry * ie;
     IdxEntry *  hash(char * nombre);
     void imprimirNombre();

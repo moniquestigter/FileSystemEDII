@@ -201,17 +201,16 @@ string API::toLowerCase(string palabra)
 //Manipular Archivos
 char * API::leerArchivo(char * nombre,BloqueFolder * actual)
 {
+    char * nombre2 = {"DiscoVirtual.txt"};
+    cout<<"1"<<endl;
+    Archivo * arch = new Archivo(nombre2,256*4096);
+    cout<<"2"<<endl;
     char * contenido = {""};
-    for(int x = 0;x < actual->listaBloqueArchivo.size();x++)
-    {
-        char * n = actual->listaBloqueArchivo.at(x)->nombre;
-
-        if(strcmp(n,nombre)==0)
-        {
-            contenido = actual->listaBloqueArchivo.at(x)->leer();
-            return contenido;
-        }
-    }
+    cout<<"3"<<endl;
+    cout<<"4"<<endl;
+    cout<<"5"<<endl;
+    cout<<"6"<<endl;
+    cout<<"7"<<endl;
     return contenido;
 }
 
